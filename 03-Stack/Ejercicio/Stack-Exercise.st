@@ -145,9 +145,9 @@ Object subclass: #BaseDeLaPila
 	category: 'Stack-Exercise'!
 
 !BaseDeLaPila methodsFor: 'adding' stamp: 'SS 4/24/2018 17:04:26'!
-insertarElemento: unValor
+insertarElemento: unObjeto
 	
-	^ ElementoDeLaPila inicializarCon: unValor ySiguiente: self! !
+	^ ElementoDeLaPila inicializarCon: unObjeto ySiguiente: self! !
 
 
 !BaseDeLaPila methodsFor: 'removing' stamp: 'SS 4/24/2018 17:02:05'!
@@ -171,21 +171,21 @@ top
 
 !classDefinition: #ElementoDeLaPila category: #'Stack-Exercise'!
 Object subclass: #ElementoDeLaPila
-	instanceVariableNames: 'valor siguienteElementoDeLaPila'
+	instanceVariableNames: 'objetoGuardado siguienteElementoDeLaPila'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
 !ElementoDeLaPila methodsFor: 'initialization' stamp: 'SS 4/24/2018 16:58:16'!
-inicializarCon: unValor ySiguiente: unElemento
-	valor := unValor.
+inicializarCon: unObjeto ySiguiente: unElemento
+	objetoGuardado := unObjeto.
 	siguienteElementoDeLaPila  := unElemento ! !
 
 
 !ElementoDeLaPila methodsFor: 'adding' stamp: 'SS 4/24/2018 17:07:08'!
-insertarElemento: unValor
+insertarElemento: unObjeto
 	
-	^ ElementoDeLaPila inicializarCon: unValor ySiguiente: self! !
+	^ ElementoDeLaPila inicializarCon: unObjeto ySiguiente: self! !
 
 
 !ElementoDeLaPila methodsFor: 'removing' stamp: 'SS 4/24/2018 17:06:32'!
@@ -204,7 +204,7 @@ size
 
 !ElementoDeLaPila methodsFor: 'accessing' stamp: 'SS 4/24/2018 17:05:47'!
 top
-	^ valor! !
+	^ objetoGuardado! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -213,8 +213,8 @@ ElementoDeLaPila class
 	instanceVariableNames: ''!
 
 !ElementoDeLaPila class methodsFor: 'as yet unclassified' stamp: 'SS 4/24/2018 17:14:38'!
-inicializarCon: unValor ySiguiente: unElemento
-	^ self basicNew inicializarCon: unValor ySiguiente: unElemento ! !
+inicializarCon: unObjeto ySiguiente: unElemento
+	^ self basicNew inicializarCon: unObjeto ySiguiente: unElemento ! !
 
 
 !classDefinition: #OOStack category: #'Stack-Exercise'!
@@ -230,8 +230,8 @@ inicializarCon: unTopeDeLaPIla
 
 
 !OOStack methodsFor: 'adding' stamp: 'SS 4/24/2018 17:04:05'!
-push: unValor
-	topeDeLaPila := topeDeLaPila insertarElemento: unValor. ! !
+push: unObjeto
+	topeDeLaPila := topeDeLaPila insertarElemento: unObjeto. ! !
 
 
 !OOStack methodsFor: 'removing' stamp: 'SS 4/24/2018 17:02:58'!
