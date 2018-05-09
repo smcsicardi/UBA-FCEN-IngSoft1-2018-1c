@@ -408,40 +408,38 @@ SummarizingAccount subclass: #Portfolio
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!Portfolio methodsFor: 'balance' stamp: 'SS 5/7/2018 21:14:42'!
+!Portfolio methodsFor: 'balance' stamp: 'j a p 5/9/2018 16:50:20'!
 balance
-	
-	^aCollectionOfAccounts inject: 0 into: [:result :anAccount | result + anAccount balance  ]
+	^ aCollectionOfAccounts sum: [ :anAccount | anAccount balance ]
 	! !
 
 
-!Portfolio methodsFor: 'testing' stamp: 'SS 5/7/2018 21:12:35'!
+!Portfolio methodsFor: 'testing' stamp: 'j a p 5/9/2018 16:45:43'!
 manages: anAccount
+	^ self =  anAccount or:
+		[aCollectionOfAccounts anySatisfy:[ :managedAccount | managedAccount manages: anAccount  ]  ].! !
 
-		^aCollectionOfAccounts inject: (self = anAccount) into: [:result :anAccountInPortfolio | result | (anAccountInPortfolio manages: anAccount) ]! !
-
-!Portfolio methodsFor: 'testing' stamp: 'SS 5/7/2018 21:47:23'!
+!Portfolio methodsFor: 'testing' stamp: 'j a p 5/9/2018 16:46:45'!
 registers: aTransaction
+	^aCollectionOfAccounts anySatisfy: [:anAccount | anAccount registers: aTransaction].! !
 
-	^aCollectionOfAccounts inject: false into: [:result :anAccount | result | (anAccount registers: aTransaction) ]! !
 
-
-!Portfolio methodsFor: 'transactions' stamp: 'SS 5/7/2018 21:22:23'!
+!Portfolio methodsFor: 'transactions' stamp: 'j a p 5/9/2018 16:51:27'!
 transactions 
 
-	^aCollectionOfAccounts inject: (Set new) into: [:result :anAccount | result union: anAccount transactions]! !
+	^aCollectionOfAccounts inject: (OrderedCollection new) into: [:result :anAccount | result union: anAccount transactions]! !
 
-!Portfolio methodsFor: 'transactions' stamp: 'SS 5/7/2018 21:37:33'!
+!Portfolio methodsFor: 'transactions' stamp: 'j a p 5/9/2018 16:47:22'!
 transactionsOf: anAccount 
-
 	(self manages: anAccount )
 		 ifTrue: [^anAccount transactions].
-		self error: Portfolio accountNotManagedMessageDescription .! !
+		self error: self class accountNotManagedMessageDescription .
+	! !
 
 
-!Portfolio methodsFor: 'initialize' stamp: 'SS 5/7/2018 20:52:31'!
-conColeccion: anOrderedCollection 
-	aCollectionOfAccounts := anOrderedCollection ! !
+!Portfolio methodsFor: 'initialize' stamp: 'j a p 5/9/2018 16:48:32'!
+initializeWithCollection: anOrderedCollectionOfAccounts
+	aCollectionOfAccounts := anOrderedCollectionOfAccounts! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -458,7 +456,7 @@ accountNotManagedMessageDescription
 	^'Este portfolio no maneja esa cuenta'! !
 
 
-!Portfolio class methodsFor: 'instance creation' stamp: 'SS 5/7/2018 21:45:22'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'j a p 5/9/2018 16:54:08'!
 with: anAccount1 with: anAccount2
 
 	| aCollectionOfAccounts |
@@ -466,16 +464,16 @@ with: anAccount1 with: anAccount2
 	aCollectionOfAccounts  := OrderedCollection with: anAccount1 with: anAccount2.
 	
 	(anAccount1 manages:anAccount2)
-		ifFalse: [^ self new conColeccion: aCollectionOfAccounts.].
+		ifFalse: [^ self withAll: aCollectionOfAccounts ].
 	
 	self error: self accountAlreadyManagedErrorMessage .
 
 ! !
 
-!Portfolio class methodsFor: 'instance creation' stamp: 'SS 5/7/2018 21:38:48'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'j a p 5/9/2018 16:49:26'!
 withAll: aCollectionOfAccounts
 
-	^ self new conColeccion: aCollectionOfAccounts.! !
+	^ self new initializeWithCollection: aCollectionOfAccounts.! !
 
 
 !classDefinition: #ReceptiveAccount category: #'Portfolio-Ejercicio'!
