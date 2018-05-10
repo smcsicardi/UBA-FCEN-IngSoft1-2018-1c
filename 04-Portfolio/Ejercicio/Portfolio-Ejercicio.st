@@ -456,8 +456,11 @@ accountNotManagedMessageDescription
 	^'Este portfolio no maneja esa cuenta'! !
 
 
-!Portfolio class methodsFor: 'instance creation' stamp: 'j a p 5/9/2018 16:54:08'!
+!Portfolio class methodsFor: 'instance creation' stamp: 'j a p 5/10/2018 16:03:59'!
 with: anAccount1 with: anAccount2
+	"durante la clase que se nos dio para hacer el ejercicio, advertimos que el test que chequea la funcionalidad de este mensaje no era completo, ya que solo chequea que de error solo en el caso en que el primer account incluya al otro, o bien que sean el mismo.
+	lo consultamos en el momento y se nos dijo que este mensaje debia ser implementado con la funcionalidad suficiente como para que pase los tests, nada mas.
+	entendimos que esa era la forma de respetar el enfoque TDD, y por lo tanto hicimos caso, y por ello el chequeo realizado en este mensaje para realizar self error se remite unicamente a los casos abarcados en los tests.  "
 
 	| aCollectionOfAccounts |
 
