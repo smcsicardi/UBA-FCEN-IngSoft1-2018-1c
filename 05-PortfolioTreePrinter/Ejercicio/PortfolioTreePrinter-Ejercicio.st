@@ -544,15 +544,40 @@ Object subclass: #AccountInvestmentEarnings
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
+!AccountInvestmentEarnings methodsFor: 'processing' stamp: 'SS 5/17/2018 13:33:38'!
+calculateWith: anAccount
+	^anAccount transactions inject: 0 into: [:sumOfInvestments :aTransaction | sumOfInvestments + (aTransaction processWith: self)]! !
+
+
+!AccountInvestmentEarnings methodsFor: 'processors' stamp: 'SS 5/17/2018 13:14:44'!
+processCertificateOfDeposit: aCertificateOfDeposit
+	^ aCertificateOfDeposit value * (aCertificateOfDeposit tna /360) * aCertificateOfDeposit numberOfDays ! !
+
+!AccountInvestmentEarnings methodsFor: 'processors' stamp: 'SS 5/17/2018 13:30:22'!
+processDeposit: aDeposit
+	^0! !
+
+!AccountInvestmentEarnings methodsFor: 'processors' stamp: 'SS 5/17/2018 13:54:48'!
+processTransferDeposit: aTransferDeposit
+	^0! !
+
+!AccountInvestmentEarnings methodsFor: 'processors' stamp: 'SS 5/17/2018 13:55:02'!
+processTransferWithdraw: aTransferWithdraw
+	^0! !
+
+!AccountInvestmentEarnings methodsFor: 'processors' stamp: 'SS 5/17/2018 13:55:18'!
+processWithdraw: aWithdraw
+	^0! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'AccountInvestmentEarnings class' category: #'PortfolioTreePrinter-Ejercicio'!
 AccountInvestmentEarnings class
 	instanceVariableNames: ''!
 
-!AccountInvestmentEarnings class methodsFor: 'operations' stamp: 'j a p 5/16/2018 16:33:17'!
+!AccountInvestmentEarnings class methodsFor: 'instance creation' stamp: 'SS 5/17/2018 13:09:47'!
 calculate: anAccount
-	^ anAccount transactions inject: 0 into: [:sumOfInvestments :aTransaction | sumOfInvestments + aTransaction earningValue]! !
+	^ self new calculateWith: anAccount! !
 
 
 !classDefinition: #AccountInvestmentNet category: #'PortfolioTreePrinter-Ejercicio'!
@@ -562,15 +587,40 @@ Object subclass: #AccountInvestmentNet
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
+!AccountInvestmentNet methodsFor: 'processing' stamp: 'SS 5/17/2018 14:03:00'!
+calculateWith: anAccount
+	^anAccount transactions inject: 0 into: [:sumOfInvestments :aTransaction | sumOfInvestments + (aTransaction processWith: self)]! !
+
+
+!AccountInvestmentNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:02:08'!
+processCertificateOfDeposit: aCertificateOfDeposit
+	^ aCertificateOfDeposit value! !
+
+!AccountInvestmentNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:02:15'!
+processDeposit: aDeposit
+	^ 0! !
+
+!AccountInvestmentNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:02:21'!
+processTransferDeposit: aTransferDeposit
+	^ 0! !
+
+!AccountInvestmentNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:02:28'!
+processTransferWithdraw: aTransferWithdraw
+	^ 0! !
+
+!AccountInvestmentNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:02:37'!
+processWithdraw: aWithdraw
+	^ 0! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'AccountInvestmentNet class' category: #'PortfolioTreePrinter-Ejercicio'!
 AccountInvestmentNet class
 	instanceVariableNames: ''!
 
-!AccountInvestmentNet class methodsFor: 'operations' stamp: 'j a p 5/16/2018 16:00:30'!
+!AccountInvestmentNet class methodsFor: 'instance creation' stamp: 'SS 5/17/2018 13:58:50'!
 calculate: anAccount
-	^ anAccount transactions inject: 0 into: [:sumOfInvestments :aTransaction | sumOfInvestments + aTransaction investmentValue]! !
+	^ self new calculateWith: anAccount ! !
 
 
 !classDefinition: #AccountSummary category: #'PortfolioTreePrinter-Ejercicio'!
@@ -580,15 +630,40 @@ Object subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
+!AccountSummary methodsFor: 'processing' stamp: 'SS 5/17/2018 14:04:57'!
+summarizeWith: anAccount
+	^ anAccount transactions inject: OrderedCollection new into: [ :summary :aTransaction | summary add: (aTransaction processWith: self). summary]! !
+
+
+!AccountSummary methodsFor: 'processors' stamp: 'SS 5/17/2018 14:09:47'!
+processCertificateOfDeposit: aCertificateOfDeposit
+	^'Plazo fijo por ', aCertificateOfDeposit value asString, ' durante ', aCertificateOfDeposit numberOfDays asString, ' dias a una tna de ', (aCertificateOfDeposit tna *100) asString, '%'! !
+
+!AccountSummary methodsFor: 'processors' stamp: 'SS 5/17/2018 14:06:33'!
+processDeposit: aDeposit
+	^'Deposito por ', aDeposit value asString! !
+
+!AccountSummary methodsFor: 'processors' stamp: 'SS 5/17/2018 14:07:33'!
+processTransferDeposit: aTransferDeposit
+	^'Transferencia por ', aTransferDeposit value asString! !
+
+!AccountSummary methodsFor: 'processors' stamp: 'SS 5/17/2018 14:10:23'!
+processTransferWithdraw: aTransferWithdraw
+	^'Transferencia por ', (-1*(aTransferWithdraw value)) asString! !
+
+!AccountSummary methodsFor: 'processors' stamp: 'SS 5/17/2018 14:07:04'!
+processWithdraw: aWithdraw
+	^'Extraccion por ', aWithdraw value asString! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'AccountSummary class' category: #'PortfolioTreePrinter-Ejercicio'!
 AccountSummary class
 	instanceVariableNames: ''!
 
-!AccountSummary class methodsFor: 'operations' stamp: 's s 5/10/2018 21:29:44'!
+!AccountSummary class methodsFor: 'instance creation' stamp: 'SS 5/17/2018 14:03:34'!
 summarize: anAccount
-	^ anAccount transactions inject: OrderedCollection new into: [ :summary :aTransaction | summary add: (aTransaction humanReadablePrint). summary]! !
+	^ self new summarizeWith: anAccount ! !
 
 
 !classDefinition: #AccountTransaction category: #'PortfolioTreePrinter-Ejercicio'!
@@ -602,11 +677,6 @@ Object subclass: #AccountTransaction
 value
 
 	self subclassResponsibility ! !
-
-
-!AccountTransaction methodsFor: 'printing' stamp: 's s 5/10/2018 20:51:14'!
-humanReadablePrint
-	self subclassResponsibility .! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -640,27 +710,22 @@ initializeFor: aValue during: anAmountOfTime at:aTna on:anAccount
 	tna := aTna! !
 
 
-!CertificateOfDeposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:15:36'!
-absoluteValue
-	^-1 * value! !
+!CertificateOfDeposit methodsFor: 'value' stamp: 'SS 5/17/2018 13:50:24'!
+numberOfDays
+	^ numberOfDays ! !
 
-!CertificateOfDeposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:31:16'!
-earningValue
-	^ value * (tna /360) * numberOfDays ! !
+!CertificateOfDeposit methodsFor: 'value' stamp: 'SS 5/17/2018 13:14:55'!
+tna
+	^ tna! !
 
-!CertificateOfDeposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:11:56'!
-investmentValue
+!CertificateOfDeposit methodsFor: 'value' stamp: 'SS 5/17/2018 13:34:28'!
+value
 	^value! !
 
-!CertificateOfDeposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:56:52'!
-transferValue
 
-^ 0! !
-
-
-!CertificateOfDeposit methodsFor: 'printing' stamp: 'j a p 5/16/2018 16:58:44'!
-humanReadablePrint
-	^'Plazo fijo por ',(value asString),' durante ', (numberOfDays asString) ,' dias a una tna de ',((tna*100) asString),'%'! !
+!CertificateOfDeposit methodsFor: 'processing' stamp: 'SS 5/17/2018 13:11:56'!
+processWith: aProcessor
+	^ aProcessor processCertificateOfDeposit: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -693,32 +758,15 @@ initializeFor: aValue
 	value := aValue ! !
 
 
-!Deposit methodsFor: 'value' stamp: 'SS 5/10/2018 19:25:25'!
-absoluteValue
-
-	^ value! !
-
-!Deposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:29:39'!
-earningValue
-	^ 0! !
-
-!Deposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:01:52'!
-investmentValue
-	^0! !
-
-!Deposit methodsFor: 'value' stamp: 's s 5/10/2018 21:28:44'!
-transferValue
-	^ 0! !
-
 !Deposit methodsFor: 'value' stamp: 'HernanWilkinson 7/13/2011 18:38'!
 value
 
 	^ value! !
 
 
-!Deposit methodsFor: 'printing' stamp: 's s 5/10/2018 20:54:34'!
-humanReadablePrint
-	^'Deposito por ',(value asString)! !
+!Deposit methodsFor: 'processing' stamp: 'SS 5/17/2018 13:29:58'!
+processWith: aProcessor
+	^ aProcessor processDeposit: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -755,23 +803,9 @@ initializeFor: aValue
 	value := aValue ! !
 
 
-!Withdraw methodsFor: 'value' stamp: 'SS 5/10/2018 19:25:12'!
-absoluteValue
-
-	^-1* value ! !
-
-!Withdraw methodsFor: 'value' stamp: 'j a p 5/16/2018 16:30:21'!
-earningValue
-
-	^ 0! !
-
 !Withdraw methodsFor: 'value' stamp: 'j a p 5/16/2018 16:02:05'!
 investmentValue
 	^0! !
-
-!Withdraw methodsFor: 'value' stamp: 's s 5/10/2018 21:28:50'!
-transferValue
-	^ 0! !
 
 !Withdraw methodsFor: 'value' stamp: 'SS 5/10/2018 19:24:45'!
 value
@@ -779,9 +813,9 @@ value
 	^ value ! !
 
 
-!Withdraw methodsFor: 'printing' stamp: 's s 5/10/2018 20:55:41'!
-humanReadablePrint
-	^'Extraccion por ',(value asString)! !
+!Withdraw methodsFor: 'processing' stamp: 'SS 5/17/2018 13:57:57'!
+processWith: aProcessor
+	^ aProcessor processWithdraw: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -812,15 +846,83 @@ Object subclass: #AccountTransferNet
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
+!AccountTransferNet methodsFor: 'processing' stamp: 'SS 5/17/2018 14:17:03'!
+calculateWith: anAccount
+	^ anAccount transactions inject: 0 into: [:sumOfTransactions :aTransaction | sumOfTransactions + (aTransaction processWith: self)]! !
+
+
+!AccountTransferNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:17:43'!
+processCertificateOfDeposit: aCertificateOfDeposit
+	^ 0! !
+
+!AccountTransferNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:14:36'!
+processDeposit: aDeposit
+	^0! !
+
+!AccountTransferNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:15:47'!
+processTransferDeposit: aTransferDeposit
+	^ aTransferDeposit value! !
+
+!AccountTransferNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:15:28'!
+processTransferWithdraw: aTransferWithdraw
+	^ aTransferWithdraw value *-1! !
+
+!AccountTransferNet methodsFor: 'processors' stamp: 'SS 5/17/2018 14:14:45'!
+processWithdraw: aWithdraw
+	^0! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'AccountTransferNet class' category: #'PortfolioTreePrinter-Ejercicio'!
 AccountTransferNet class
 	instanceVariableNames: ''!
 
-!AccountTransferNet class methodsFor: 'operations' stamp: 'j a p 5/16/2018 15:34:54'!
+!AccountTransferNet class methodsFor: 'instance creation' stamp: 'SS 5/17/2018 14:12:47'!
 calculate: anAccount
-	^ anAccount transactions inject: 0 into: [:sumOfTransactions :aTransaction | sumOfTransactions + aTransaction transferValue]! !
+	^ self new calculateWith: anAccount! !
+
+
+!classDefinition: #BalanceCalculator category: #'PortfolioTreePrinter-Ejercicio'!
+Object subclass: #BalanceCalculator
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTreePrinter-Ejercicio'!
+
+!BalanceCalculator methodsFor: 'processing' stamp: 'SS 5/17/2018 14:42:06'!
+calculateWith: anAccount
+	^anAccount transactions inject: 0 into: [:sumOfBalance :aTransaction | sumOfBalance + (aTransaction processWith: self)]! !
+
+
+!BalanceCalculator methodsFor: 'processors' stamp: 'SS 5/17/2018 14:43:32'!
+processCertificateOfDeposit: aCertificateOfDeposit
+	^ aCertificateOfDeposit value * -1! !
+
+!BalanceCalculator methodsFor: 'processors' stamp: 'SS 5/17/2018 14:42:47'!
+processDeposit: aDeposit
+	^ aDeposit value! !
+
+!BalanceCalculator methodsFor: 'processors' stamp: 'SS 5/17/2018 14:42:57'!
+processTransferDeposit: aTransferDeposit
+	^ aTransferDeposit value! !
+
+!BalanceCalculator methodsFor: 'processors' stamp: 'SS 5/17/2018 14:47:29'!
+processTransferWithdraw: aTransferWithdraw
+	^ aTransferWithdraw value * -1! !
+
+!BalanceCalculator methodsFor: 'processors' stamp: 'SS 5/17/2018 14:47:22'!
+processWithdraw: aWithdraw
+	^ aWithdraw value *-1! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'BalanceCalculator class' category: #'PortfolioTreePrinter-Ejercicio'!
+BalanceCalculator class
+	instanceVariableNames: ''!
+
+!BalanceCalculator class methodsFor: 'instance creation' stamp: 'SS 5/17/2018 14:41:07'!
+calculate: anAccount
+	^ self new calculateWith: anAccount! !
 
 
 !classDefinition: #PortfolioReverseTreePrinter category: #'PortfolioTreePrinter-Ejercicio'!
@@ -830,44 +932,15 @@ Object subclass: #PortfolioReverseTreePrinter
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!PortfolioReverseTreePrinter methodsFor: 'initialization' stamp: 'j a p 5/17/2018 11:07:13'!
-initializeWithPortfolio: aPortfolio namingAccountWith: accountNames
-	dict := accountNames.
-	output := OrderedCollection new.
-	indentation := 0.
-	aPortfolio printAsTree: self.
-	^ output.! !
-
-
-!PortfolioReverseTreePrinter methodsFor: 'printing' stamp: 'j a p 5/17/2018 11:06:39'!
-printAccount: anAccount
-	| thisLine | 
-	thisLine := ''.
-	indentation timesRepeat: [thisLine := thisLine, ' '].
-	thisLine := thisLine, (dict at: anAccount ).
-	output addFirst: thisLine.! !
-
-!PortfolioReverseTreePrinter methodsFor: 'printing' stamp: 'j a p 5/17/2018 11:06:33'!
-printPortfolio: aPortfolio withAccounts: accounts
-	| thisLine |
-	thisLine := ''.
-	indentation timesRepeat: [thisLine := thisLine, ' '].
-	thisLine := thisLine, (dict at: aPortfolio ).
-	output addFirst: thisLine.
-	indentation := indentation + 1.
-	accounts do: [:anAccount | anAccount printAsTree: self].
-	indentation := indentation -1.
-	! !
-
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'PortfolioReverseTreePrinter class' category: #'PortfolioTreePrinter-Ejercicio'!
 PortfolioReverseTreePrinter class
 	instanceVariableNames: ''!
 
-!PortfolioReverseTreePrinter class methodsFor: 'instance creation' stamp: 'j a p 5/17/2018 10:58:54'!
+!PortfolioReverseTreePrinter class methodsFor: 'processing' stamp: 'SS 5/17/2018 14:26:05'!
 reversePrintWithPortfolio: aPortfolio namingAccountWith: accountNames
-	^ self new initializeWithPortfolio: aPortfolio namingAccountWith: accountNames! !
+	^ (PortfolioTreePrinter printWithPortfolio: aPortfolio namingAccountWith: accountNames) reverse! !
 
 
 !classDefinition: #PortfolioTreePrinter category: #'PortfolioTreePrinter-Ejercicio'!
@@ -877,12 +950,12 @@ Object subclass: #PortfolioTreePrinter
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!PortfolioTreePrinter methodsFor: 'initialization' stamp: 'j a p 5/17/2018 11:08:16'!
+!PortfolioTreePrinter methodsFor: 'initialization' stamp: 'SS 5/17/2018 14:20:14'!
 initializeWithPortfolio: aPortfolio namingAccountWith: accountNames
 	dict := accountNames.
 	output := OrderedCollection new.
 	indentation := 0.
-	aPortfolio printAsTree: self.
+	aPortfolio processWith: self.
 	^ output.! !
 
 
@@ -894,15 +967,15 @@ printAccount: anAccount
 	thisLine := thisLine, (dict at: anAccount ).
 	output add: thisLine.! !
 
-!PortfolioTreePrinter methodsFor: 'printing' stamp: 'j a p 5/17/2018 11:04:05'!
-printPortfolio: aPortfolio withAccounts: accounts
+!PortfolioTreePrinter methodsFor: 'printing' stamp: 'SS 5/17/2018 14:21:35'!
+printPortfolio: aPortfolio
 	| thisLine |
 	thisLine := ''.
 	indentation timesRepeat: [thisLine := thisLine, ' '].
 	thisLine := thisLine, (dict at: aPortfolio ).
 	output add: thisLine.
 	indentation := indentation + 1.
-	accounts do: [:anAccount | anAccount printAsTree: self].
+	(aPortfolio accounts) do: [:anAccount | anAccount processWith: self].
 	indentation := indentation -1.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -931,6 +1004,11 @@ manages: anAccount
 !SummarizingAccount methodsFor: 'testing' stamp: 'HernanWilkinson 7/13/2011 18:34'!
 registers: aTransaction
 
+	self subclassResponsibility ! !
+
+
+!SummarizingAccount methodsFor: 'processing' stamp: 'SS 5/17/2018 14:37:09'!
+processWith: aProcessor
 	self subclassResponsibility ! !
 
 
@@ -997,9 +1075,14 @@ initializeWithAll: aCollectionOfAccounts
 	accounts := aCollectionOfAccounts   ! !
 
 
-!Portfolio methodsFor: 'printing' stamp: 'j a p 5/17/2018 10:47:00'!
-printAsTree: aPortfolioTreePrinter
-	aPortfolioTreePrinter printPortfolio: self withAccounts: accounts ! !
+!Portfolio methodsFor: 'processing' stamp: 'SS 5/17/2018 14:20:32'!
+processWith: aPortfolioTreePrinter
+	aPortfolioTreePrinter printPortfolio: self ! !
+
+
+!Portfolio methodsFor: 'accessing' stamp: 'SS 5/17/2018 14:19:14'!
+accounts
+	^ accounts ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1070,10 +1153,10 @@ initialize
 	transactions := OrderedCollection new.! !
 
 
-!ReceptiveAccount methodsFor: 'transactions' stamp: 'SS 5/10/2018 19:25:53'!
+!ReceptiveAccount methodsFor: 'transactions' stamp: 'SS 5/17/2018 14:44:00'!
 balance
 
-	^ transactions inject: 0 into: [ :balance :transaction | balance + transaction absoluteValue ]! !
+	^ BalanceCalculator calculate: self! !
 
 !ReceptiveAccount methodsFor: 'transactions' stamp: 'HernanWilkinson 7/13/2011 18:37'!
 register: aTransaction
@@ -1100,8 +1183,8 @@ registers: aTtransaction
 ! !
 
 
-!ReceptiveAccount methodsFor: 'printing' stamp: 'j a p 5/17/2018 10:52:53'!
-printAsTree: aPortfolioTreePrinter
+!ReceptiveAccount methodsFor: 'processing' stamp: 'SS 5/17/2018 14:21:57'!
+processWith: aPortfolioTreePrinter
 	aPortfolioTreePrinter printAccount: self! !
 
 
@@ -1150,25 +1233,13 @@ Object subclass: #TransferDeposit
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!TransferDeposit methodsFor: 'value' stamp: 's s 5/10/2018 20:46:06'!
-absoluteValue
-	^ transfer value! !
-
-!TransferDeposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:30:36'!
-earningValue
-	^ 0! !
-
-!TransferDeposit methodsFor: 'value' stamp: 'j a p 5/16/2018 16:02:31'!
-investmentValue
-	^0! !
-
 !TransferDeposit methodsFor: 'value' stamp: 's s 5/10/2018 20:47:53'!
 transfer
 	^transfer! !
 
-!TransferDeposit methodsFor: 'value' stamp: 's s 5/10/2018 21:28:34'!
-transferValue
-	^ self absoluteValue! !
+!TransferDeposit methodsFor: 'value' stamp: 'SS 5/17/2018 14:11:30'!
+value
+	^ transfer value! !
 
 
 !TransferDeposit methodsFor: 'initialization' stamp: 's s 5/10/2018 20:34:11'!
@@ -1176,9 +1247,9 @@ initializeFromTransfer: aTransfer
 	transfer := aTransfer! !
 
 
-!TransferDeposit methodsFor: 'printing' stamp: 's s 5/10/2018 21:03:58'!
-humanReadablePrint
-	^'Transferencia por ',(self absoluteValue asString)! !
+!TransferDeposit methodsFor: 'processing' stamp: 'SS 5/17/2018 13:57:23'!
+processWith: aProcessor
+	^ aProcessor processTransferDeposit: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1199,27 +1270,13 @@ Object subclass: #TransferWithdraw
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!TransferWithdraw methodsFor: 'value' stamp: 's s 5/10/2018 20:46:34'!
-absoluteValue
-	^ -1*transfer value! !
-
-!TransferWithdraw methodsFor: 'value' stamp: 'j a p 5/16/2018 16:30:32'!
-earningValue
-	^ 0
-	! !
-
-!TransferWithdraw methodsFor: 'value' stamp: 'j a p 5/16/2018 16:13:49'!
-investmentValue
-	^0! !
-
 !TransferWithdraw methodsFor: 'value' stamp: 's s 5/10/2018 20:47:17'!
 transfer
 	^transfer! !
 
-!TransferWithdraw methodsFor: 'value' stamp: 's s 5/10/2018 21:28:39'!
-transferValue
-	^ self absoluteValue
-	! !
+!TransferWithdraw methodsFor: 'value' stamp: 'SS 5/17/2018 14:11:12'!
+value
+	^ transfer value! !
 
 
 !TransferWithdraw methodsFor: 'initialization' stamp: 's s 5/10/2018 20:34:05'!
@@ -1227,9 +1284,9 @@ initializeFromTransfer: aTransfer
 	transfer := aTransfer! !
 
 
-!TransferWithdraw methodsFor: 'printing' stamp: 's s 5/10/2018 20:57:13'!
-humanReadablePrint
-	^ 'Transferencia por ', (self absoluteValue asString)! !
+!TransferWithdraw methodsFor: 'processing' stamp: 'SS 5/17/2018 13:57:38'!
+processWith: aProcessor
+	^ aProcessor processTransferWithdraw: self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
