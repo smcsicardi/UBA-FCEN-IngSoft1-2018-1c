@@ -526,15 +526,15 @@ investmentNetOf: aReceptiveAccount
 	
 	^ AccountInvestmentNet calculate: aReceptiveAccount! !
 
-!PortfolioTest methodsFor: 'test support' stamp: 'j a p 5/16/2018 17:05:07'!
+!PortfolioTest methodsFor: 'test support' stamp: 'j a p 5/17/2018 10:56:13'!
 portofolioTreeOf: aPortfolio namingAccountWith: aDictionary 
 	
-	PortfolioTreePrinter printWithPortfolio: aPortfolio namingAccountWith: aDictionary ! !
+	^PortfolioTreePrinter printWithPortfolio: aPortfolio namingAccountWith: aDictionary ! !
 
-!PortfolioTest methodsFor: 'test support' stamp: 'HernanWilkinson 9/6/2016 19:43'!
+!PortfolioTest methodsFor: 'test support' stamp: 'j a p 5/17/2018 10:59:01'!
 reversePortofolioTreeOf: aPortfolio namingAccountWith: aDictionary 
 	
-	self shouldBeImplemented ! !
+	^PortfolioReverseTreePrinter reversePrintWithPortfolio: aPortfolio namingAccountWith: aDictionary ! !
 
 
 !classDefinition: #AccountInvestmentEarnings category: #'PortfolioTreePrinter-Ejercicio'!
@@ -823,6 +823,53 @@ calculate: anAccount
 	^ anAccount transactions inject: 0 into: [:sumOfTransactions :aTransaction | sumOfTransactions + aTransaction transferValue]! !
 
 
+!classDefinition: #PortfolioReverseTreePrinter category: #'PortfolioTreePrinter-Ejercicio'!
+Object subclass: #PortfolioReverseTreePrinter
+	instanceVariableNames: 'indentation dict output'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTreePrinter-Ejercicio'!
+
+!PortfolioReverseTreePrinter methodsFor: 'initialization' stamp: 'j a p 5/17/2018 11:07:13'!
+initializeWithPortfolio: aPortfolio namingAccountWith: accountNames
+	dict := accountNames.
+	output := OrderedCollection new.
+	indentation := 0.
+	aPortfolio printAsTree: self.
+	^ output.! !
+
+
+!PortfolioReverseTreePrinter methodsFor: 'printing' stamp: 'j a p 5/17/2018 11:06:39'!
+printAccount: anAccount
+	| thisLine | 
+	thisLine := ''.
+	indentation timesRepeat: [thisLine := thisLine, ' '].
+	thisLine := thisLine, (dict at: anAccount ).
+	output addFirst: thisLine.! !
+
+!PortfolioReverseTreePrinter methodsFor: 'printing' stamp: 'j a p 5/17/2018 11:06:33'!
+printPortfolio: aPortfolio withAccounts: accounts
+	| thisLine |
+	thisLine := ''.
+	indentation timesRepeat: [thisLine := thisLine, ' '].
+	thisLine := thisLine, (dict at: aPortfolio ).
+	output addFirst: thisLine.
+	indentation := indentation + 1.
+	accounts do: [:anAccount | anAccount printAsTree: self].
+	indentation := indentation -1.
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'PortfolioReverseTreePrinter class' category: #'PortfolioTreePrinter-Ejercicio'!
+PortfolioReverseTreePrinter class
+	instanceVariableNames: ''!
+
+!PortfolioReverseTreePrinter class methodsFor: 'instance creation' stamp: 'j a p 5/17/2018 10:58:54'!
+reversePrintWithPortfolio: aPortfolio namingAccountWith: accountNames
+	^ self new initializeWithPortfolio: aPortfolio namingAccountWith: accountNames! !
+
+
 !classDefinition: #PortfolioTreePrinter category: #'PortfolioTreePrinter-Ejercicio'!
 Object subclass: #PortfolioTreePrinter
 	instanceVariableNames: 'indentation dict output'
@@ -830,15 +877,16 @@ Object subclass: #PortfolioTreePrinter
 	poolDictionaries: ''
 	category: 'PortfolioTreePrinter-Ejercicio'!
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'j a p 5/16/2018 17:37:42'!
+!PortfolioTreePrinter methodsFor: 'initialization' stamp: 'j a p 5/17/2018 11:08:16'!
 initializeWithPortfolio: aPortfolio namingAccountWith: accountNames
 	dict := accountNames.
 	output := OrderedCollection new.
 	indentation := 0.
-	self printLineWith: aPortfolio .
+	aPortfolio printAsTree: self.
 	^ output.! !
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'j a p 5/16/2018 17:34:05'!
+
+!PortfolioTreePrinter methodsFor: 'printing' stamp: 'j a p 5/16/2018 17:34:05'!
 printAccount: anAccount
 	| thisLine | 
 	thisLine := ''.
@@ -846,26 +894,16 @@ printAccount: anAccount
 	thisLine := thisLine, (dict at: anAccount ).
 	output add: thisLine.! !
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'j a p 5/16/2018 17:38:17'!
-printLineWIth: anAccount
-	anAccount printAsTree: self.! !
-
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'j a p 5/16/2018 17:38:36'!
-printPortfolio: aPortfolio
+!PortfolioTreePrinter methodsFor: 'printing' stamp: 'j a p 5/17/2018 11:04:05'!
+printPortfolio: aPortfolio withAccounts: accounts
 	| thisLine |
 	thisLine := ''.
 	indentation timesRepeat: [thisLine := thisLine, ' '].
+	thisLine := thisLine, (dict at: aPortfolio ).
+	output add: thisLine.
 	indentation := indentation + 1.
-	
-	
-	
-	"""
-	printAccount: anAccount
-	| thisLine | 
-	thisLine := ''.
-	indentation timesRepeat: [thisLine := thisLine, ' '].
-	thisLine := thisLine, (dict at: anAccount ).
-	output add: thisLine."""! !
+	accounts do: [:anAccount | anAccount printAsTree: self].
+	indentation := indentation -1.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -873,7 +911,7 @@ printPortfolio: aPortfolio
 PortfolioTreePrinter class
 	instanceVariableNames: ''!
 
-!PortfolioTreePrinter class methodsFor: 'as yet unclassified' stamp: 'j a p 5/16/2018 17:16:09'!
+!PortfolioTreePrinter class methodsFor: 'instance creation' stamp: 'j a p 5/16/2018 17:16:09'!
 printWithPortfolio: aPortfolio namingAccountWith: accountNames
 	^ self new initializeWithPortfolio: aPortfolio namingAccountWith: accountNames! !
 
@@ -936,10 +974,6 @@ balance
 	^ accounts sum: [ :account | account balance ]
 ! !
 
-!Portfolio methodsFor: 'transactions' stamp: 'j a p 5/16/2018 17:27:03'!
-printAsTree: aPortfolioTreePrinter
-	aPortfolioTreePrinter printPortfolio: self! !
-
 !Portfolio methodsFor: 'transactions' stamp: 'HAW 9/25/2017 19:40:20'!
 transactions 
 
@@ -961,6 +995,11 @@ transactionsOf: anAccount
 initializeWithAll: aCollectionOfAccounts
 
 	accounts := aCollectionOfAccounts   ! !
+
+
+!Portfolio methodsFor: 'printing' stamp: 'j a p 5/17/2018 10:47:00'!
+printAsTree: aPortfolioTreePrinter
+	aPortfolioTreePrinter printPortfolio: self withAccounts: accounts ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1059,6 +1098,11 @@ registers: aTtransaction
 
 	^ transactions includes: aTtransaction 
 ! !
+
+
+!ReceptiveAccount methodsFor: 'printing' stamp: 'j a p 5/17/2018 10:52:53'!
+printAsTree: aPortfolioTreePrinter
+	aPortfolioTreePrinter printAccount: self! !
 
 
 !classDefinition: #Transfer category: #'PortfolioTreePrinter-Ejercicio'!
