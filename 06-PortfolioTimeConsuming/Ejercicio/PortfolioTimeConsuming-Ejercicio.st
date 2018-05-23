@@ -603,23 +603,20 @@ Object subclass: #AccountSummaryWithAllInvestmentInformation
 	poolDictionaries: ''
 	category: 'PortfolioTimeConsuming-Ejercicio'!
 
-!AccountSummaryWithAllInvestmentInformation methodsFor: 'as yet unclassified' stamp: 'HernanWilkinson 7/17/2011 23:56'!
+!AccountSummaryWithAllInvestmentInformation methodsFor: 'initialization' stamp: 'HernanWilkinson 7/17/2011 23:56'!
 initializeFor: aReceptiveAccount 
 	
 	account := aReceptiveAccount ! !
 
-!AccountSummaryWithAllInvestmentInformation methodsFor: 'as yet unclassified' stamp: 'j a p 5/23/2018 11:00:26'!
+
+!AccountSummaryWithAllInvestmentInformation methodsFor: 'accessing' stamp: 'SS 5/23/2018 11:53:10'!
 lines 
 
-	| lines investmentEarnings investmentSemaphore |
+	| lines investmentEarnings |
 	
-	investmentSemaphore := Semaphore new.
-	
-	[investmentEarnings := InvestmentNetVisitor for: account. investmentSemaphore signal.] fork.
+	investmentEarnings :=Promise withBlock: [(InvestmentNetVisitor for: account) value].
 	
 	lines := (AccountSummaryWithInvestmentEarnings for: account) lines.
-	
-	investmentSemaphore wait.
 	
 	lines add: 'Inversiones por ', investmentEarnings value printString.
 	
@@ -644,23 +641,21 @@ Object subclass: #AccountSummaryWithInvestmentEarnings
 	poolDictionaries: ''
 	category: 'PortfolioTimeConsuming-Ejercicio'!
 
-!AccountSummaryWithInvestmentEarnings methodsFor: 'as yet unclassified' stamp: 'HernanWilkinson 7/17/2011 23:52'!
+!AccountSummaryWithInvestmentEarnings methodsFor: 'initialization' stamp: 'HernanWilkinson 7/17/2011 23:52'!
 initializeFor: aReceptiveAccount 
 	
 	account := aReceptiveAccount ! !
 
-!AccountSummaryWithInvestmentEarnings methodsFor: 'as yet unclassified' stamp: 'j a p 5/23/2018 11:22:17'!
+
+!AccountSummaryWithInvestmentEarnings methodsFor: 'accessing' stamp: 'SS 5/23/2018 11:53:02'!
 lines 
 
-	| lines investmentEarnings investmentSemaphore |
+	| lines investmentEarnings |
+
 	
-	investmentSemaphore := Semaphore new.
-	
-	[investmentEarnings := InvestmentEarningVisitor for: account. investmentSemaphore signal] fork.
+	investmentEarnings := Promise withBlock: [(InvestmentEarningVisitor for: account) value].
 		
 	lines := (AccountSummary for: account) lines.
-	
-	investmentSemaphore wait.
 	
 	lines add: 'Ganancias por ', investmentEarnings value printString.
 	
@@ -850,7 +845,6 @@ AccountTransaction subclass: #TransferDeposit
 	poolDictionaries: ''
 	category: 'PortfolioTimeConsuming-Ejercicio'!
 
-
 !TransferDeposit methodsFor: 'initialization' stamp: 's s 5/10/2018 20:34:11'!
 initializeFromTransfer: aTransfer
 	transfer := aTransfer! !
@@ -912,7 +906,6 @@ AccountTransaction subclass: #TransferWithdraw
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'PortfolioTimeConsuming-Ejercicio'!
-
 
 !TransferWithdraw methodsFor: 'initialization' stamp: 's s 5/10/2018 20:34:05'!
 initializeFromTransfer: aTransfer
@@ -1385,6 +1378,36 @@ InvestmentNetVisitor class
 for: aReceptiveAccount 
 	
 	^ self new initializeFor: aReceptiveAccount ! !
+
+
+!classDefinition: #Promise category: #'PortfolioTimeConsuming-Ejercicio'!
+Object subclass: #Promise
+	instanceVariableNames: 'aSemaphore value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'PortfolioTimeConsuming-Ejercicio'!
+
+!Promise methodsFor: 'initialization' stamp: 'SS 5/23/2018 11:40:51'!
+initializeWithBlock: aBlock
+	aSemaphore := Semaphore new.
+	[value := aBlock value. aSemaphore signal.] fork.
+	! !
+
+
+!Promise methodsFor: 'accesing' stamp: 'SS 5/23/2018 11:40:45'!
+value
+	aSemaphore wait.
+	^value! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Promise class' category: #'PortfolioTimeConsuming-Ejercicio'!
+Promise class
+	instanceVariableNames: ''!
+
+!Promise class methodsFor: 'instance creation' stamp: 'SS 5/23/2018 11:35:28'!
+withBlock: aBlock
+	^ self new initializeWithBlock: aBlock! !
 
 
 !classDefinition: #SummarizingAccount category: #'PortfolioTimeConsuming-Ejercicio'!
