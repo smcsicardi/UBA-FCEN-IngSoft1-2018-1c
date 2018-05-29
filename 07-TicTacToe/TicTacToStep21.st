@@ -5,381 +5,331 @@ TestCase subclass: #TicTacToeTest
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 09:59:04'!
-test01
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:34:46'!
+test01NewGameCreatesEmptyGame
 
 	|game|
 	
 	game := TicTacToe new.
 	
-	self assert: game Xs isEmpty.
-	self assert: game Os isEmpty.
+	self assert: game isEmptyGame.
 	! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 10:20:33'!
-test02
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	
-	self assert: 1 equals: game Xs size.
-	self assert: (game Xs includes: 1@1).
-	self assert: game Os isEmpty.
-	
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 10:50:55'!
-test03
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	game putOAt: 2@2.
-	
-	self assert: 1 equals: game Xs size.
-	self assert: (game Xs includes: 1@1).
-	self assert: 1 equals: game Os size.
-	self assert: (game Os includes: 2@2).
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 11:01:26'!
-test04
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	
-	self
-	should: [game putXAt: 2@2]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [ :anError|
-		self assert: TicTacToe notXTurnErrorMessage equals: anError messageText.	
-		self assert: 1 equals: game Xs size.
-		self assert: (game Xs includes: 1@1).
-		self assert: game Os isEmpty.
-		].
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 11:08:58'!
-test05
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	game putOAt: 2@2.
-	self
-	should: [game putOAt: 3@3]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [ :anError|
-		self assert: TicTacToe notXTurnErrorMessage equals: anError messageText.	
-		self assert: 1 equals: game Xs size.
-		self assert: (game Xs includes: 1@1).
-		self assert: 1 equals: game Os size.
-		self assert: (game Os includes: 2@2).
-		].
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 11:18:20'!
-test06
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	game putOAt: 2@2.
-	self
-	should: [game putXAt: 1@1]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [ :anError|
-		self assert: TicTacToe positionTakenErrorMessage equals: anError messageText.	
-		self assert: 1 equals: game Xs size.
-		self assert: (game Xs includes: 1@1).
-		self assert: 1 equals: game Os size.
-		self assert: (game Os includes: 2@2).
-		].
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 11:37:38'!
-test07
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	game putOAt: 2@2.
-	self
-	should: [game putXAt: 2@2]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [ :anError|
-		self assert: TicTacToe positionTakenErrorMessage equals: anError messageText.	
-		self assert: 1 equals: game Xs size.
-		self assert: (game Xs includes: 1@1).
-		self assert: 1 equals: game Os size.
-		self assert: (game Os includes: 2@2).
-		].
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 11:45:04'!
-test08
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	self
-	should: [game putOAt: 1@1]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [ :anError|
-		self assert: TicTacToe positionTakenErrorMessage equals: anError messageText.	
-		self assert: 1 equals: game Xs size.
-		self assert: (game Xs includes: 1@1).
-		self assert:  game Os isEmpty.
-
-		].
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 12:12:12'!
-test09
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putXAt: 1@1.
-	game putOAt: 2@2.
-	game putXAt: 3@3.
-	self
-	should: [game putOAt: 2@2]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [ :anError|
-		self assert: TicTacToe positionTakenErrorMessage equals: anError messageText.	
-		self assert: 2 equals: game Xs size.
-		self assert: (game Xs includes: 1@1).
-		self assert: (game Xs includes: 3@3).
-		self assert: 1 equals: game Os size.
-		self assert: (game Os includes: 2@2).
-		
-		].
-	! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test10
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:17:41'!
+test02CanPutXAndOAndPlaysAre2
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 1 @ 1.
-	game putOAt: 2 @ 1.
-	game putXAt: 2 @ 2.
-	game putOAt: 3 @ 3.
-	self deny: game OHasWon.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 2.
+	self
+		assert: 1
+		equals: game Xs size.
+	self assert: (game Xs includes: 1 @ 1).
+	self
+		assert: 1
+		equals: game Os size.
+	self assert: (game Os includes: 2 @ 2).! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:16:47'!
+test03PlayerXCannotPlayTwiceInARow
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	self
+		should: [ game markWithXAt: 2 @ 2 ]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self assert: TicTacToe notXTurnErrorMessage equals: anError messageText.].! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:18:31'!
+test03_01PlayerXFillsThePosition1x1
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	self assert: (game thereIsAnXAtPosition: 1@1)! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:24:00'!
+test04PlayerXOnlyFillsThePosition1x1
+	| game playsSet |
+	game _ TicTacToe new.
+	playsSet := Set new.
+	playsSet add:1@1.
+	game markWithXAt: 1 @ 1.
+	self assert: (game Xs) equals: playsSet ! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:33:09'!
+test05AfterXTurnPlayerOCantPlayTwice
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 2.
+	self
+		should: [ game markWithOAt: 3 @ 3 ]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self
+				assert: TicTacToe notOTurnErrorMessage
+				equals: anError messageText.
+			self
+				assert: 1
+				equals: game Xs size.
+			self assert: (game Xs includes: 1 @ 1).
+			self
+				assert: 1
+				equals: game Os size.
+			self assert: (game Os includes: 2 @ 2) ].! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:03:36'!
+test05PlayerOFillsThePosition2x2
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 2.
+	self assert: (game thereIsAnOAtPosition: 2@2)! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:33:35'!
+test06PlayerOFillsThePosition2x2
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 2.
+	self assert: (game thereIsAnOAtPosition: 2@2)! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:35:43'!
+test07PlayerXCantPutOnTakenPosition
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 2.
+	self
+		should: [ game markWithXAt: 1 @ 1 ]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self
+				assert: TicTacToe positionTakenErrorMessage
+				equals: anError messageText.
+			self
+				assert: 1
+				equals: game Xs size.
+			self assert: (game Xs includes: 1 @ 1).
+			self
+				assert: 1
+				equals: game Os size.
+			self assert: (game Os includes: 2 @ 2) ].! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:35:30'!
+test08PlayerOCantPutOnTakenPosition
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	self
+		should: [ game markWithOAt: 1 @ 1 ]
+		raise: Error - MessageNotUnderstood
+		withExceptionDo: [ :anError |
+			self
+				assert: TicTacToe positionTakenErrorMessage
+				equals: anError messageText.
+			self
+				assert: 1
+				equals: game Xs size.
+			self assert: (game Xs includes: 1 @ 1).
+			self assert: game Os isEmpty ].! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:38:28'!
+test10AnOngoingGameIsNotWon
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 1.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 3 @ 3.
+	self deny: game hasPlayerOWon.
 	self deny: game hasPlayerXWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test11
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:40:03'!
+test11PlayerXWinsOnFirstHorizontalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 1 @ 1.
-	game putOAt: 2 @ 1.
-	game putXAt: 1 @ 2.
-	game putOAt: 3 @ 3.
-	game putXAt: 1 @ 3.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 1.
+	game markWithXAt: 1 @ 2.
+	game markWithOAt: 3 @ 3.
+	game markWithXAt: 1 @ 3.
 	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.! !
+	self deny: game hasPlayerOWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test12
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:40:16'!
+test12PlayerXWinsOnSecondHorizontalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 2 @ 1.
-	game putOAt: 1 @ 1.
-	game putXAt: 2 @ 2.
-	game putOAt: 3 @ 1.
-	game putXAt: 2 @ 3.
+	game markWithXAt: 2 @ 1.
+	game markWithOAt: 1 @ 1.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 3 @ 1.
+	game markWithXAt: 2 @ 3.
 	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.! !
+	self deny: game hasPlayerOWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test13
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:40:25'!
+test13PlayerXWinsOnThirdHorizontalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 3 @ 1.
-	game putOAt: 1 @ 1.
-	game putXAt: 3 @ 2.
-	game putOAt: 2 @ 1.
-	game putXAt: 3 @ 3.
+	game markWithXAt: 3 @ 1.
+	game markWithOAt: 1 @ 1.
+	game markWithXAt: 3 @ 2.
+	game markWithOAt: 2 @ 1.
+	game markWithXAt: 3 @ 3.
 	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.! !
+	self deny: game hasPlayerOWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test14
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:40:45'!
+test14PlayerXWinsOnFirstVerticalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 1 @ 1.
-	game putOAt: 2 @ 2.
-	game putXAt: 2 @ 1.
-	game putOAt: 3 @ 3.
-	game putXAt: 3 @ 1.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 2.
+	game markWithXAt: 2 @ 1.
+	game markWithOAt: 3 @ 3.
+	game markWithXAt: 3 @ 1.
 	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.! !
+	self deny: game hasPlayerOWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test15
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:40:59'!
+test15PlayerXWinsOnDownDiagonalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 1 @ 1.
-	game putOAt: 2 @ 1.
-	game putXAt: 2 @ 2.
-	game putOAt: 2 @ 3.
-	game putXAt: 3 @ 3.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 1.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 2 @ 3.
+	game markWithXAt: 3 @ 3.
 	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.! !
+	self deny: game hasPlayerOWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test16
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:41:19'!
+test16PlayerXWinsOnUpDiagonalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 3 @ 1.
-	game putOAt: 2 @ 1.
-	game putXAt: 2 @ 2.
-	game putOAt: 1 @ 2.
-	game putXAt: 1 @ 3.
+	game markWithXAt: 3 @ 1.
+	game markWithOAt: 2 @ 1.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 1 @ 2.
+	game markWithXAt: 1 @ 3.
 	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.! !
+	self deny: game hasPlayerOWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test17
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:42:01'!
+test17PlayerOWonOnFirstHorizontalLine
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 3 @ 1.
-	game putOAt: 1 @ 1.
-	game putXAt: 2 @ 2.
-	game putOAt: 1 @ 2.
-	game putXAt: 3 @ 3.
-	game putOAt: 1 @ 3.
-	self assert: game OHasWon.
+	game markWithXAt: 3 @ 1.
+	game markWithOAt: 1 @ 1.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 1 @ 2.
+	game markWithXAt: 3 @ 3.
+	game markWithOAt: 1 @ 3.
+	self assert: game hasPlayerOWon.
 	self deny: game hasPlayerXWon.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:15:12'!
-test18
-
-	| game |
-	
-	game := TicTacToe new.
-	
-	game putXAt: 1@1.	
-	game putOAt: 2@1.
-	game putXAt: 1@2.
-	game putOAt: 3@1.	
-	game putXAt: 1@3.
-
-	self 
-		should: [ game putOAt: 3@1 ]
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: TicTacToe canNotPlayWhenGameIsOverErrorMessage equals: anError messageText.
-			self assert: 2 equals: game Os size.
-			self assert: (game Os includes: 2@1).
-			self assert: (game Os includes: 3@1) ]
-			
-			! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:22:51'!
-test19
-
-	| game |
-	
-	game := TicTacToe new.
-	
-	game putXAt: 2@2.
-	game putOAt: 1@1.	
-	game putXAt: 2@1.
-	game putOAt: 1@2.
-	game putXAt: 3@1.	
-	game putOAt: 1@3.
-
-	self 
-		should: [ game putXAt: 3@2 ]
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: TicTacToe canNotPlayWhenGameIsOverErrorMessage equals: anError messageText.
-			self assert: 3 equals: game Xs size.
-			self assert: (game Xs includes: 2@2).
-			self assert: (game Xs includes: 2@1).
-			self assert: (game Xs includes: 3@1) ]
-			
-			! !
-
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test20
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:42:57'!
+test18PlayerOCantPlayWhenGameIsOver
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 2 @ 2.
-	game putOAt: 1 @ 1.
-	game putXAt: 1 @ 3.
-	game putOAt: 3 @ 1.
-	game putXAt: 2 @ 1.
-	game putOAt: 2 @ 3.
-	game putXAt: 1 @ 2.
-	game putOAt: 3 @ 2.
-	game putXAt: 3 @ 3.
+	game markWithXAt: 1 @ 1.
+	game markWithOAt: 2 @ 1.
+	game markWithXAt: 1 @ 2.
+	game markWithOAt: 3 @ 1.
+	game markWithXAt: 1 @ 3.
+	self
+		should: [ game markWithOAt: 3 @ 1 ]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self
+				assert: TicTacToe canNotPlayWhenGameIsOverErrorMessage
+				equals: anError messageText.
+			self
+				assert: 2
+				equals: game Os size.
+			self assert: (game Os includes: 2 @ 1).
+			self assert: (game Os includes: 3 @ 1) ].! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:43:19'!
+test19PlayerXCantPlayWhenGameIsOver
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 1 @ 1.
+	game markWithXAt: 2 @ 1.
+	game markWithOAt: 1 @ 2.
+	game markWithXAt: 3 @ 1.
+	game markWithOAt: 1 @ 3.
+	self
+		should: [ game markWithXAt: 3 @ 2 ]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self
+				assert: TicTacToe canNotPlayWhenGameIsOverErrorMessage
+				equals: anError messageText.
+			self
+				assert: 3
+				equals: game Xs size.
+			self assert: (game Xs includes: 2 @ 2).
+			self assert: (game Xs includes: 2 @ 1).
+			self assert: (game Xs includes: 3 @ 1) ].! !
+
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:44:55'!
+test20TiedGameIsTied
+	| game |
+	game _ TicTacToe new.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 1 @ 1.
+	game markWithXAt: 1 @ 3.
+	game markWithOAt: 3 @ 1.
+	game markWithXAt: 2 @ 1.
+	game markWithOAt: 2 @ 3.
+	game markWithXAt: 1 @ 2.
+	game markWithOAt: 3 @ 2.
+	game markWithXAt: 3 @ 3.
 	self assert: game isOver.
 	self deny: game hasPlayerXWon.
-	self deny: game OHasWon.
+	self deny: game hasPlayerOWon.
 	self assert: game isTied.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
-test21
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:50:31'!
+test20TiedGameIsTiedAndOver
 	| game |
 	game _ TicTacToe new.
-	game putXAt: 2 @ 2.
-	game putOAt: 1 @ 2.
-	game putXAt: 1 @ 1.
-	game putOAt: 2 @ 1.
-	game putXAt: 1 @ 3.
-	game putOAt: 2 @ 3.
-	game putXAt: 3 @ 2.
-	game putOAt: 3 @ 1.
-	game putXAt: 3 @ 3.
+	game markWithXAt: 2 @ 2.
+	game markWithOAt: 1 @ 1.
+	game markWithXAt: 1 @ 3.
+	game markWithOAt: 3 @ 1.
+	game markWithXAt: 2 @ 1.
+	game markWithOAt: 2 @ 3.
+	game markWithXAt: 1 @ 2.
+	game markWithOAt: 3 @ 2.
+	game markWithXAt: 3 @ 3.
 	self assert: game isOver.
-	self assert: game hasPlayerXWon.
-	self deny: game OHasWon.
-	self deny: game isTied.! !
+	self deny: game hasPlayerXWon.
+	self deny: game hasPlayerOWon.
+	self assert: game isTied.! !
 
-!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:08:14'!
+!TicTacToeTest methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:50:54'!
 test22OCantPlayFirst
-
-	|game|
-	
-	game := TicTacToe new.
-
-	game putOAt: 1@1.
-	self 
-	should: [ game putOAt: 1@1. ]
-	raise: Error 		! !
+	| game |
+	game _ TicTacToe new.
+	self
+		should: [ game markWithOAt: 1 @ 1 ]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self assert: (TicTacToe notOTurnErrorMessage) equals: anError messageText.].! !
 
 
 !classDefinition: #TicTacToe category: #TicTacToStep21!
 Object subclass: #TicTacToe
-	instanceVariableNames: 'os xs turn winner gameState'
+	instanceVariableNames: 'os xs gameState'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 12:21:33'!
-OHasWon
-	
-	^winner = #o! !
 
 !TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 10:01:34'!
 Os
@@ -399,6 +349,26 @@ addAnOPosition: anOPosition
 addAnXPosition: anXPosition
 	xs add: anXPosition.! !
 
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:18:30'!
+checkIfIsTied
+	^ xs size = 5 and: [
+		os size = 4 and: [ self hasPlayerXWon not ]
+		" and: [ self YHasWon not ]]]" ].! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:57:46'!
+checkIfPlayerOWon
+	^ self checkIfPlayerWon: os! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:57:34'!
+checkIfPlayerWon: positions
+	^ (self hasCompletedRow: positions) or: [
+		(self hasCompletedColumn: positions) or: [
+			(self hasDownDiagonal: positions) or: [ self hasUpDiagonal: positions ]]].! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:56:08'!
+checkIfPlayerXWon
+	^ self checkIfPlayerWon: xs! !
+
 !TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 12:51:23'!
 hasCompletedColumn: positions
 	
@@ -415,77 +385,70 @@ hasDownDiagonal: positions
 	^(1 to: 3) allSatisfy: [ :n | positions includes: n@n ]
 ! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:54:45'!
+hasPlayerOWon
+	^ gameState hasPlayerOWon ! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:54:40'!
 hasPlayerXWon
-	^ winner = #x.! !
+	^ gameState hasPlayerXWon ! !
 
 !TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:02:13'!
 hasUpDiagonal: positions
 
 	^(1 to: 3) allSatisfy: [ :n | positions includes: n@(4-n) ]! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:01:53'!
-hasWin: positions
-
-	^(self hasCompletedRow: positions)
-		or: [(self hasCompletedColumn: positions) 
-				or: [(self hasDownDiagonal: positions)
-					or: [(self hasUpDiagonal: positions)]]]
-
-
-! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 10:22:35'!
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:27:50'!
 initialize
-	
+	gameState := TicTacToeXTurnState new initializeWith: self.
 	xs:= Set new.
 	os:= Set new.
-	
-	turn:= #x.! !
+	! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:17:25'!
-isGameOver
-	
-	^winner = #x or: [ winner = #o ]! !
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:36:09'!
+isEmptyGame
+	^os isEmpty and: [xs isEmpty].! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:10:35'!
 isOver
-	^ self hasPlayerXWon or: [
-		self OHasWon or: [ self isTied ]].! !
+	^ gameState isOver.! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:58'!
+isPlayingO
+	^gameState isPlayingO! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:48'!
+isPlayingX
+	^gameState isPlayingX ! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:18:42'!
 isTied
-	^ xs size = 5 and: [
-		os size = 4 and: [ self hasPlayerXWon not ]
-		" and: [ self YHasWon not ]]]" ].! !
+	^ gameState isTied .! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:18:30'!
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:17:34'!
+markWithOAt: aPosition
+	gameState markWithOAt: aPosition ! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:17:22'!
+markWithXAt: aPosition	
+	gameState markWithXAt: aPosition 
+	! !
+
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:28:48'!
 positionTaken: aPosition
-	(xs includes: aPosition) or: (os includes: aPosition).! !
+	^(xs includes: aPosition) or: (os includes: aPosition).! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:16:00'!
-putOAt: aPosition
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:24:48'!
+setState: aGameState
+	gameState := aGameState.! !
 
-	self isGameOver ifTrue: [ self error: self class canNotPlayWhenGameIsOverErrorMessage ].
-	turn = #o ifFalse: [ self error: self class notXTurnErrorMessage ].
-	(xs includes: aPosition) ifTrue: [ self error: self class positionTakenErrorMessage ].
-	(os includes: aPosition) ifTrue: [ self error: self class positionTakenErrorMessage ].
-	os add: aPosition.
-	(self hasWin: os) ifTrue: [ ^winner := #o ].
-	turn := #x
-! !
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:58:16'!
+thereIsAnOAtPosition: aPosition
+	 ^ (os includes: aPosition )! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:23:15'!
-putXAt: aPosition
-
-	self isGameOver ifTrue: [ self error: self class canNotPlayWhenGameIsOverErrorMessage ].
-	turn = #x ifFalse: [ self error: self class notXTurnErrorMessage ].
-	(xs includes: aPosition) ifTrue: [ self error: self class positionTakenErrorMessage ].
-	(os includes: aPosition) ifTrue: [ self error: self class positionTakenErrorMessage ].
-	xs add: aPosition.
-	(self hasWin: xs) ifTrue: [ ^winner := #x ].
-	turn := #o
-! !
+!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:58:03'!
+thereIsAnXAtPosition: aPosition
+	 ^ (xs includes: aPosition )! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -516,30 +479,46 @@ positionTakenErrorMessage
 
 !classDefinition: #TicTacToeFinishedState category: #TicTacToStep21!
 Object subclass: #TicTacToeFinishedState
-	instanceVariableNames: ''
+	instanceVariableNames: 'game'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:04:37'!
-OHasWon
-	self subclassResponsibility ! !
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+hasPlayerOWon
+	self subclassResponsibility.! !
 
 !TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
 	self subclassResponsibility.! !
 
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:27:00'!
+initializeWith: aGame
+	game := aGame.! !
+
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:11:18'!
+isOver
+	^true! !
+
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:52:43'!
+isPlayingO
+	^false! !
+
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:52:21'!
+isPlayingX
+	^false! !
+
 !TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:04:41'!
 isTied
 	self subclassResponsibility ! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:16:34'!
-putOAt: aPosition
-	self error: self class canNotPlayWhenGameIsOverErrorMessage! !
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:12:42'!
+markWithOAt: aPosition
+	self error: game class canNotPlayWhenGameIsOverErrorMessage.! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:16:26'!
-putXAt: aPosition
-	self error: self class canNotPlayWhenGameIsOverErrorMessage! !
+!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:12:33'!
+markWithXAt: aPosition
+	self error: game class canNotPlayWhenGameIsOverErrorMessage.! !
 
 
 !classDefinition: #TicTacToeOWonState category: #TicTacToStep21!
@@ -549,9 +528,9 @@ TicTacToeFinishedState subclass: #TicTacToeOWonState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeOWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:02:45'!
-OHasWon
-	^ true! !
+!TicTacToeOWonState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+hasPlayerOWon
+	^ true.! !
 
 !TicTacToeOWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
@@ -569,9 +548,9 @@ TicTacToeFinishedState subclass: #TicTacToeTiedState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeTiedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:04:06'!
-OHasWon
-	^false! !
+!TicTacToeTiedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+hasPlayerOWon
+	^ false.! !
 
 !TicTacToeTiedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
@@ -589,9 +568,9 @@ TicTacToeFinishedState subclass: #TicTacToeXWonState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeXWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:03:45'!
-OHasWon
-	^false! !
+!TicTacToeXWonState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+hasPlayerOWon
+	^ false.! !
 
 !TicTacToeXWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
@@ -609,16 +588,32 @@ Object subclass: #TicTacToeTurnState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 17:59:15'!
-IsGameOver
-	^ false! !
-
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 17:58:55'!
-OHasWon
-	^ false! !
+!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+hasPlayerOWon
+	^ false.! !
 
 !TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
+	^ false.! !
+
+!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:22:19'!
+initializeWith: aGame
+	game := aGame ! !
+
+!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:13:47'!
+isOver
+	^ false.! !
+
+!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:11'!
+isPlayingO
+	self subclassResponsibility ! !
+
+!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:08'!
+isPlayingX
+	self subclassResponsibility ! !
+
+!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:13:58'!
+isTied
 	^ false.! !
 
 
@@ -629,9 +624,26 @@ TicTacToeTurnState subclass: #TicTacToeOTurnState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:15:32'!
-putXAt: aPosition
-	self error: game class notXTurnErrorMessage! !
+!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:51:33'!
+isPlayingO
+	^true! !
+
+!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:51:29'!
+isPlayingX
+	^false! !
+
+!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:30:01'!
+markWithOAt: aPosition
+	(game positionTaken: aPosition) ifTrue: [ self error: game class positionTakenErrorMessage ].
+	game addAnOPosition: aPosition.
+	game checkIfPlayerOWon 
+		ifTrue: [ game setState: (TicTacToeOWonState new initializeWith: game) ]
+		ifFalse: [game setState: (TicTacToeXTurnState new initializeWith: game)].! !
+
+!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:32:09'!
+markWithXAt: aPosition
+	self error: game class notXTurnErrorMessage.
+! !
 
 
 !classDefinition: #TicTacToeXTurnState category: #TicTacToStep21!
@@ -641,16 +653,23 @@ TicTacToeTurnState subclass: #TicTacToeXTurnState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:14:57'!
-putOAt: aPosition
-	self error: game class notOTurnErrorMessage! !
+!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:52:03'!
+isPlayingO
+	^false! !
 
-!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:19:36'!
-putXAt: aPosition
-	(game positionTaken: aPosition )ifTrue: [ self error: self class positionTakenErrorMessage ].
+!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:51:56'!
+isPlayingX
+	^true! !
+
+!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:27:02'!
+markWithOAt: aPosition
+	self error: game class notOTurnErrorMessage.! !
+
+!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:29:40'!
+markWithXAt: aPosition
+	(game positionTaken: aPosition) ifTrue: [ self error: game class positionTakenErrorMessage ].
 	game addAnXPosition: aPosition.
-	(self xHasWon)
-		ifTrue: [game setState:TicTacToeXWonState new ]
-		ifFalse:[ game isTied
-							ifTrue: [game setState: TicTacToeTiedState]
-							ifFalse: [game setState: TicTacToeOTurnState ]. ]! !
+	game checkIfPlayerXWon 
+		ifTrue: [ game setState: (TicTacToeXWonState new initializeWith: game) ]
+		ifFalse: [game checkIfIsTied ifTrue: [ game setState: (TicTacToeTiedState new initializeWith: game)]
+				ifFalse: [ game setState: (TicTacToeOTurnState new initializeWith: game) ]].! !
