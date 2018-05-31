@@ -334,139 +334,143 @@ Object subclass: #TicTacToe
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 10:01:34'!
+!TicTacToe methodsFor: 'accessing' stamp: 'jg 5/22/2018 10:01:34'!
 Os
 
 	^os copy.! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 10:01:25'!
+!TicTacToe methodsFor: 'accessing' stamp: 'jg 5/22/2018 10:01:25'!
 Xs
 
 	^xs copy.! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:19:23'!
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:18:30'!
+checkIfIsTied
+	^ xs size = 5 and: [
+		os size = 4 and: [ self hasPlayerXWon not ]
+		" and: [ self YHasWon not ]]]" ].! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:57:46'!
+checkIfPlayerOWon
+	^ self checkIfPlayerWon: os! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:57:34'!
+checkIfPlayerWon: positions
+	^ (self hasCompletedRow: positions) or: [
+		(self hasCompletedColumn: positions) or: [
+			(self hasDownDiagonal: positions) or: [ self hasUpDiagonal: positions ]]].! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:56:08'!
+checkIfPlayerXWon
+	^ self checkIfPlayerWon: xs! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'jg 5/22/2018 12:51:23'!
+hasCompletedColumn: positions
+	
+	^ (1 to: 3) anySatisfy: [ :y | (positions count: [ :position | position y = y ]) = 3 ]! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'jg 5/22/2018 12:36:01'!
+hasCompletedRow: positions
+
+	^ (1 to: 3) anySatisfy: [ :x | (positions count: [ :posicion | posicion x = x ]) = 3 ]! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'jg 5/22/2018 12:56:21'!
+hasDownDiagonal: positions
+
+	^(1 to: 3) allSatisfy: [ :n | positions includes: n@n ]
+! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:54:45'!
+hasPlayerOWon
+	^ gameState hasPlayerOWon ! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:54:40'!
+hasPlayerXWon
+	^ gameState hasPlayerXWon ! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'jg 5/22/2018 13:02:13'!
+hasUpDiagonal: positions
+
+	^(1 to: 3) allSatisfy: [ :n | positions includes: n@(4-n) ]! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:36:09'!
+isEmptyGame
+	^os isEmpty and: [xs isEmpty].! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:10:35'!
+isOver
+	^ gameState isOver.! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:53:58'!
+isPlayingO
+	^gameState isPlayingO! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 18:53:48'!
+isPlayingX
+	^gameState isPlayingX ! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/30/2018 12:29:20'!
+isPositionValid: aPosition
+	 ^ aPosition x < 4 and: [aPosition x >0 and: [ aPosition y < 4 and: [aPosition y > 0]]]! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:18:42'!
+isTied
+	^ gameState isTied .! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:28:48'!
+positionTaken: aPosition
+	^(xs includes: aPosition) or: (os includes: aPosition).! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:58:16'!
+thereIsAnOAtPosition: aPosition
+	 ^ (os includes: aPosition )! !
+
+!TicTacToe methodsFor: 'checking' stamp: 'SS 5/28/2018 19:58:03'!
+thereIsAnXAtPosition: aPosition
+	 ^ (xs includes: aPosition )! !
+
+
+!TicTacToe methodsFor: 'playing' stamp: 'j a p 5/28/2018 18:19:23'!
 addAnOPosition: anOPosition
 	os add: anOPosition.! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:19:10'!
+!TicTacToe methodsFor: 'playing' stamp: 'j a p 5/28/2018 18:19:10'!
 addAnXPosition: anXPosition
 	xs add: anXPosition.! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:56:08'!
+!TicTacToe methodsFor: 'playing' stamp: 'SS 5/30/2018 12:31:24'!
+markWithOAt: aPosition
+	(self isPositionValid: aPosition) ifFalse: [self error: self class invalidPositionErrorMessage].
+	gameState markWithOAt: aPosition ! !
+
+!TicTacToe methodsFor: 'playing' stamp: 'SS 5/30/2018 12:31:00'!
+markWithXAt: aPosition
+	(self isPositionValid: aPosition) ifFalse: [self error: self class invalidPositionErrorMessage].
+	gameState markWithXAt: aPosition 
+	! !
+
+
+!TicTacToe methodsFor: 'state changing' stamp: 'SS 5/30/2018 12:56:08'!
 changeStateBeingOTurn
 	self checkIfPlayerOWon 
 		ifTrue: [ gameState := TicTacToeOWonState new initializeWith: self ]
 		ifFalse: [ gameState := TicTacToeXTurnState new initializeWith: self].! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:55:38'!
+!TicTacToe methodsFor: 'state changing' stamp: 'SS 5/30/2018 12:55:38'!
 changeStateBeingXTurn
 	self checkIfPlayerXWon 
 		ifTrue: [ gameState := TicTacToeXWonState new initializeWith: self ]
 		ifFalse: [self checkIfIsTied ifTrue: [ gameState := TicTacToeTiedState new initializeWith: self]
 				ifFalse: [ gameState := TicTacToeOTurnState new initializeWith: self]].! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:18:30'!
-checkIfIsTied
-	^ xs size = 5 and: [
-		os size = 4 and: [ self hasPlayerXWon not ]
-		" and: [ self YHasWon not ]]]" ].! !
 
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:57:46'!
-checkIfPlayerOWon
-	^ self checkIfPlayerWon: os! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:57:34'!
-checkIfPlayerWon: positions
-	^ (self hasCompletedRow: positions) or: [
-		(self hasCompletedColumn: positions) or: [
-			(self hasDownDiagonal: positions) or: [ self hasUpDiagonal: positions ]]].! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:56:08'!
-checkIfPlayerXWon
-	^ self checkIfPlayerWon: xs! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 12:51:23'!
-hasCompletedColumn: positions
-	
-	^ (1 to: 3) anySatisfy: [ :y | (positions count: [ :position | position y = y ]) = 3 ]! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 12:36:01'!
-hasCompletedRow: positions
-
-	^ (1 to: 3) anySatisfy: [ :x | (positions count: [ :posicion | posicion x = x ]) = 3 ]! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 12:56:21'!
-hasDownDiagonal: positions
-
-	^(1 to: 3) allSatisfy: [ :n | positions includes: n@n ]
-! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:54:45'!
-hasPlayerOWon
-	^ gameState hasPlayerOWon ! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:54:40'!
-hasPlayerXWon
-	^ gameState hasPlayerXWon ! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'jg 5/22/2018 13:02:13'!
-hasUpDiagonal: positions
-
-	^(1 to: 3) allSatisfy: [ :n | positions includes: n@(4-n) ]! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:27:50'!
+!TicTacToe methodsFor: 'initialization' stamp: 'SS 5/28/2018 19:27:50'!
 initialize
 	gameState := TicTacToeXTurnState new initializeWith: self.
 	xs:= Set new.
 	os:= Set new.
 	! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:36:09'!
-isEmptyGame
-	^os isEmpty and: [xs isEmpty].! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:10:35'!
-isOver
-	^ gameState isOver.! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:58'!
-isPlayingO
-	^gameState isPlayingO! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:48'!
-isPlayingX
-	^gameState isPlayingX ! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:29:20'!
-isPositionValid: aPosition
-	 ^ aPosition x < 4 and: [aPosition x >0 and: [ aPosition y < 4 and: [aPosition y > 0]]]! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:18:42'!
-isTied
-	^ gameState isTied .! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:31:24'!
-markWithOAt: aPosition
-	(self isPositionValid: aPosition) ifFalse: [self error: self class invalidPositionErrorMessage].
-	gameState markWithOAt: aPosition ! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:31:00'!
-markWithXAt: aPosition
-	(self isPositionValid: aPosition) ifFalse: [self error: self class invalidPositionErrorMessage].
-	gameState markWithXAt: aPosition 
-	! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:28:48'!
-positionTaken: aPosition
-	^(xs includes: aPosition) or: (os includes: aPosition).! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:58:16'!
-thereIsAnOAtPosition: aPosition
-	 ^ (os includes: aPosition )! !
-
-!TicTacToe methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:58:03'!
-thereIsAnXAtPosition: aPosition
-	 ^ (xs includes: aPosition )! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -506,39 +510,41 @@ Object subclass: #TicTacToeFinishedState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+!TicTacToeFinishedState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:46:33'!
 hasPlayerOWon
 	self subclassResponsibility.! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToeFinishedState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
 	self subclassResponsibility.! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:27:00'!
-initializeWith: aGame
-	game := aGame.! !
-
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:11:18'!
+!TicTacToeFinishedState methodsFor: 'checking' stamp: 'SS 5/28/2018 19:11:18'!
 isOver
 	^true! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:52:43'!
+!TicTacToeFinishedState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:52:43'!
 isPlayingO
 	^false! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:52:21'!
+!TicTacToeFinishedState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:52:21'!
 isPlayingX
 	^false! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:04:41'!
+!TicTacToeFinishedState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:04:41'!
 isTied
 	self subclassResponsibility ! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:12:42'!
+
+!TicTacToeFinishedState methodsFor: 'initialization' stamp: 'SS 5/28/2018 19:27:00'!
+initializeWith: aGame
+	game := aGame.! !
+
+
+!TicTacToeFinishedState methodsFor: 'playing' stamp: 'SS 5/28/2018 19:12:42'!
 markWithOAt: aPosition
 	self error: game class canNotPlayWhenGameIsOverErrorMessage.! !
 
-!TicTacToeFinishedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:12:33'!
+!TicTacToeFinishedState methodsFor: 'playing' stamp: 'SS 5/28/2018 19:12:33'!
 markWithXAt: aPosition
 	self error: game class canNotPlayWhenGameIsOverErrorMessage.! !
 
@@ -550,15 +556,15 @@ TicTacToeFinishedState subclass: #TicTacToeOWonState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeOWonState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+!TicTacToeOWonState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:46:33'!
 hasPlayerOWon
 	^ true.! !
 
-!TicTacToeOWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToeOWonState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
 	^ false.! !
 
-!TicTacToeOWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:02:52'!
+!TicTacToeOWonState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:02:52'!
 isTied
 	^ false! !
 
@@ -570,15 +576,15 @@ TicTacToeFinishedState subclass: #TicTacToeTiedState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeTiedState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+!TicTacToeTiedState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:46:33'!
 hasPlayerOWon
 	^ false.! !
 
-!TicTacToeTiedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToeTiedState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
 	^ false.! !
 
-!TicTacToeTiedState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:04:10'!
+!TicTacToeTiedState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:04:10'!
 isTied
 	^true! !
 
@@ -590,15 +596,15 @@ TicTacToeFinishedState subclass: #TicTacToeXWonState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeXWonState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+!TicTacToeXWonState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:46:33'!
 hasPlayerOWon
 	^ false.! !
 
-!TicTacToeXWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToeXWonState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
 	^ true.! !
 
-!TicTacToeXWonState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:03:48'!
+!TicTacToeXWonState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:03:48'!
 isTied
 	^false! !
 
@@ -610,33 +616,34 @@ Object subclass: #TicTacToeTurnState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:46:33'!
+!TicTacToeTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:46:33'!
 hasPlayerOWon
 	^ false.! !
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'j a p 5/28/2018 18:25:32'!
+!TicTacToeTurnState methodsFor: 'checking' stamp: 'j a p 5/28/2018 18:25:32'!
 hasPlayerXWon
 	^ false.! !
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:22:19'!
-initializeWith: aGame
-	game := aGame ! !
-
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:13:47'!
+!TicTacToeTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 19:13:47'!
 isOver
 	^ false.! !
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:11'!
+!TicTacToeTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:53:11'!
 isPlayingO
 	self subclassResponsibility ! !
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:53:08'!
+!TicTacToeTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:53:08'!
 isPlayingX
 	self subclassResponsibility ! !
 
-!TicTacToeTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:13:58'!
+!TicTacToeTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 19:13:58'!
 isTied
 	^ false.! !
+
+
+!TicTacToeTurnState methodsFor: 'initialization' stamp: 'SS 5/28/2018 19:22:19'!
+initializeWith: aGame
+	game := aGame ! !
 
 
 !classDefinition: #TicTacToeOTurnState category: #TicTacToStep21!
@@ -646,21 +653,21 @@ TicTacToeTurnState subclass: #TicTacToeOTurnState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:51:33'!
+!TicTacToeOTurnState methodsFor: 'playing' stamp: 'SS 5/28/2018 18:51:33'!
 isPlayingO
 	^true! !
 
-!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:51:29'!
+!TicTacToeOTurnState methodsFor: 'playing' stamp: 'SS 5/28/2018 18:51:29'!
 isPlayingX
 	^false! !
 
-!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:56:26'!
+!TicTacToeOTurnState methodsFor: 'playing' stamp: 'SS 5/30/2018 12:56:26'!
 markWithOAt: aPosition
 	(game positionTaken: aPosition) ifTrue: [ self error: game class positionTakenErrorMessage ].
 	game addAnOPosition: aPosition.
 	game changeStateBeingOTurn .! !
 
-!TicTacToeOTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 19:32:09'!
+!TicTacToeOTurnState methodsFor: 'playing' stamp: 'SS 5/28/2018 19:32:09'!
 markWithXAt: aPosition
 	self error: game class notXTurnErrorMessage.
 ! !
@@ -673,19 +680,20 @@ TicTacToeTurnState subclass: #TicTacToeXTurnState
 	poolDictionaries: ''
 	category: 'TicTacToStep21'!
 
-!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:52:03'!
+!TicTacToeXTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:52:03'!
 isPlayingO
 	^false! !
 
-!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 18:51:56'!
+!TicTacToeXTurnState methodsFor: 'checking' stamp: 'SS 5/28/2018 18:51:56'!
 isPlayingX
 	^true! !
 
-!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/28/2018 20:27:02'!
+
+!TicTacToeXTurnState methodsFor: 'playing' stamp: 'SS 5/28/2018 20:27:02'!
 markWithOAt: aPosition
 	self error: game class notOTurnErrorMessage.! !
 
-!TicTacToeXTurnState methodsFor: 'as yet unclassified' stamp: 'SS 5/30/2018 12:53:05'!
+!TicTacToeXTurnState methodsFor: 'playing' stamp: 'SS 5/30/2018 12:53:05'!
 markWithXAt: aPosition
 	(game positionTaken: aPosition) ifTrue: [ self error: game class positionTakenErrorMessage ].
 	game addAnXPosition: aPosition.
