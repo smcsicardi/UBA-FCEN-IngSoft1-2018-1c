@@ -158,17 +158,17 @@ test07ConsolePrintsTiedGame
 	self assert: (output last) equals: 'Estado: Juego terminado - Empate!!'.
 ! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:51:54'!
+!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:16:51'!
 test08BoardViewPrintsXPlay
 
-	| game console output |
+	| game board output |
 
 	game _ TicTacToe new.
-	console  _ BoardViewObserver new initializeWith: game.
+	board  _ BoardViewObserver new initializeWith: game.
 	
-	game markWithXAt:1@1.
+	game markWithXAt:2@2.
 	
-	output _ console lines.	
+	output _ board lines.	
 
 	self assert: (output at:1) equals: ' | | '.
 	self assert: (output at:2) equals: '-----' .
@@ -615,9 +615,37 @@ Observer subclass: #BoardViewObserver
 	poolDictionaries: ''
 	category: 'TicTacToe'!
 
-!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:53:01'!
+!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:25:20'!
+oPlayed: aPosition
+	self printBoard.
+	game hasPlayerOWon ifTrue: [ lines add: 'O Won!!' ]
+		ifFalse: [ lines add: 'Playing X'. ]
+	
+! !
+
+!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:21:04'!
+printBoard
+	| rowString charToAdd colString |
+	lines _ OrderedCollection new.
+	(1 to: 3) do: [:x |
+		rowString _ ''.
+		(1 to: 3) do: [ :y |
+			(game playerXPositions includes: x@y) ifTrue: [ charToAdd _ 'X']
+				ifFalse: [ (game playerOPositions includes: x@y) ifTrue: [ charToAdd _ 'O'] ifFalse: [charToAdd  _ ' ']].
+			(y = 3) ifTrue: [colString _ charToAdd] ifFalse:[colString _ (charToAdd ,'|')].
+			rowString  _ (rowString, colString) .
+		].
+		lines add: rowString .
+		(x = 1 or: [x = 2]) ifTrue: [lines add: '-----'].
+	].! !
+
+!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:24:43'!
 xPlayed: aPosition
-	! !
+	self printBoard.
+	game hasPlayerXWon ifTrue: [ lines add: 'X Won!!' ]
+							  ifFalse: [ game isTied ifTrue: [lines add: 'Tied!!!!'] ifFalse:[ lines add: 'Playing O'.] ]
+	
+! !
 
 
 !classDefinition: #ConsoleObserver category: #TicTacToe!
