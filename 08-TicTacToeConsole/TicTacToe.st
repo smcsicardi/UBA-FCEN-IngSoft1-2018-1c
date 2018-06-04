@@ -749,12 +749,12 @@ printBoard
 	(1 to: 3) do: [:lineNumber | self printBoardLine: lineNumber	].
 ! !
 
-!BoardViewObserver methodsFor: 'printing' stamp: 'j a p 6/4/2018 12:51:31'!
+!BoardViewObserver methodsFor: 'printing' stamp: 'j a p 6/4/2018 13:06:36'!
 printBoardLine: aLineNumber
 	rowString _ ''.
 	(1 to: 3) do: [ : aColumnNumber | self printBoardPositionInLine: aLineNumber andColumn: aColumnNumber ].
 	lines add: rowString .
-	(aLineNumber = 1 or: [aLineNumber = 2]) ifTrue: [lines add: '-----'].! !
+	(aLineNumber = 3 ) ifFalse: [lines add: '-----'].! !
 
 !BoardViewObserver methodsFor: 'printing' stamp: 'j a p 6/4/2018 12:58:02'!
 printBoardPositionInLine: aLineNumber andColumn: aColumnNumber
