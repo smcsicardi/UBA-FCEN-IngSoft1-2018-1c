@@ -5,7 +5,7 @@ TestCase subclass: #TicTacToeConsoleTest
 	poolDictionaries: ''
 	category: 'TicTacToe'!
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:12:39'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:12:39'!
 test01NoActivityImpliesNoConsoleOutput
 
 	| game console output|
@@ -18,7 +18,7 @@ test01NoActivityImpliesNoConsoleOutput
 
 	self assert: output isEmpty ! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:13:17'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:13:17'!
 test02ConsoleObserverPrintsXPlay
 
 	| game console output|
@@ -33,7 +33,7 @@ test02ConsoleObserverPrintsXPlay
 	self assert: (output at: 1) equals: 'X marcó en 2@2'.
 	self assert: (output at: 2) equals: 'Estado: Jugando O'.! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:17:19'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:17:19'!
 test03ConsolePrintsTwoPlays
 
 	| game console output |
@@ -53,7 +53,7 @@ test03ConsolePrintsTwoPlays
 	self assert: (output at: 4) equals: 'Estado: Jugando X'.
 ! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:18:57'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:18:57'!
 test04ConsolePrintsThreePlays
 
 	| game console output |
@@ -76,7 +76,7 @@ test04ConsolePrintsThreePlays
 	self assert: (output at: 6) equals: 'Estado: Jugando O'.
 ! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:28:58'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:28:58'!
 test05ConsolePrintsFourPlayGameAndXWinning
 
 	| game console output |
@@ -104,7 +104,7 @@ test05ConsolePrintsFourPlayGameAndXWinning
 	self assert: (output at: 10) equals: 'Estado: Juego terminado - Ganó X!!'.
 	! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:31:18'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:31:18'!
 test06ConsolePrintsFivePlayGameAndOWinning
 
 	| game console output |
@@ -135,7 +135,7 @@ test06ConsolePrintsFivePlayGameAndOWinning
 	self assert: (output at: 12) equals: 'Estado: Juego terminado - Ganó O!!'.
 	! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:47:06'!
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'j a p 5/31/2018 20:47:06'!
 test07ConsolePrintsTiedGame
 
 	| game console output |
@@ -158,8 +158,26 @@ test07ConsolePrintsTiedGame
 	self assert: (output last) equals: 'Estado: Juego terminado - Empate!!'.
 ! !
 
-!TicTacToeConsoleTest methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:16:51'!
-test08BoardViewPrintsXPlay
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'SS 6/3/2018 22:20:39'!
+test08BoardViewPrintsEmptyGame
+
+	| game board output |
+
+	game _ TicTacToe new.
+	board  _ BoardViewObserver new initializeWith: game.
+		
+	output _ board lines.	
+
+	self assert: (output at:1) equals: ' | | '.
+	self assert: (output at:2) equals: '-----' .
+	self assert: (output at:3) equals:  ' | | '.
+	self assert: (output at:4) equals:  '-----'.
+	self assert: (output at:5) equals:  ' | | '.
+	self assert: (output at:6) equals:  'Playing X'.
+! !
+
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'SS 6/3/2018 22:20:48'!
+test09BoardViewPrintsXPlay
 
 	| game board output |
 
@@ -176,6 +194,106 @@ test08BoardViewPrintsXPlay
 	self assert: (output at:4) equals:  '-----'.
 	self assert: (output at:5) equals:  ' | | '.
 	self assert: (output at:6) equals:  'Playing O'.
+! !
+
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'SS 6/3/2018 22:21:10'!
+test10BoardViewPrintsTwoPlays
+
+	| game board output |
+
+	game _ TicTacToe new.
+	board  _ BoardViewObserver new initializeWith: game.
+	
+	game markWithXAt:2@2.
+	game markWithOAt:1@1.
+
+	output _ board lines.	
+
+	self assert: (output at:1) equals: 'O| | '.
+	self assert: (output at:2) equals: '-----' .
+	self assert: (output at:3) equals:  ' |X| '.
+	self assert: (output at:4) equals:  '-----'.
+	self assert: (output at:5) equals:  ' | | '.
+	self assert: (output at:6) equals:  'Playing X'.
+! !
+
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'SS 6/3/2018 22:21:23'!
+test11BoardViewPrintsXWon
+
+	| game board output |
+
+	game _ TicTacToe new.
+	board  _ BoardViewObserver new initializeWith: game.
+	
+	game markWithXAt:2@2.
+	game markWithOAt: 1@3.
+	game markWithXAt:1@1.
+	game markWithOAt: 1@2.
+	game markWithXAt:3@3.
+
+	output _ board lines.	
+
+	self assert: (output at:1) equals: 'X|O|O'.
+	self assert: (output at:2) equals: '-----' .
+	self assert: (output at:3) equals:  ' |X| '.
+	self assert: (output at:4) equals:  '-----'.
+	self assert: (output at:5) equals:  ' | |X'.
+	self assert: (output at:6) equals:  'X Won!!'.
+! !
+
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'SS 6/3/2018 22:21:31'!
+test12BoardViewPrintsTiedGame
+
+
+	| game board output |
+
+	game _ TicTacToe new.
+	board  _ BoardViewObserver new initializeWith: game.
+	
+	game markWithXAt:1@1.
+	game markWithOAt:1@2.
+	game markWithXAt:1@3.
+	game markWithOAt:2@1.
+	game markWithXAt:2@3.
+	game markWithOAt:2@2.
+	game markWithXAt:3@1.
+	game markWithOAt:3@3.
+	game markWithXAt:3@2.
+	
+
+	output _ board lines.	
+
+	self assert: (output at:1) equals: 'X|O|X'.
+	self assert: (output at:2) equals: '-----' .
+	self assert: (output at:3) equals:  'O|O|X'.
+	self assert: (output at:4) equals:  '-----'.
+	self assert: (output at:5) equals:  'X|X|O'.
+	self assert: (output at:6) equals:  'Tied!!'.
+! !
+
+!TicTacToeConsoleTest methodsFor: 'testing' stamp: 'SS 6/3/2018 22:26:08'!
+test13BoardViewPrintsOWon
+
+	| game board output |
+
+	game _ TicTacToe new.
+	board  _ BoardViewObserver new initializeWith: game.
+	
+	game markWithXAt:2@2.
+	game markWithOAt: 1@3.
+	game markWithXAt:3@3.
+	game markWithOAt: 1@2.
+	game markWithXAt:2@3.
+	game markWithOAt: 1@1.
+
+	output _ board lines.	
+
+	self assert: (output at:1) equals: 'O|O|O'.
+	self assert: (output at:2) equals: '-----' .
+	self assert: (output at:3) equals:  ' |X|X'.
+	self assert: (output at:4) equals:  '-----'.
+	self assert: (output at:5) equals:  ' | |X'.
+	self assert: (output at:6) equals:  'O Won!!'.
 ! !
 
 
@@ -597,15 +715,25 @@ Object subclass: #Observer
 	poolDictionaries: ''
 	category: 'TicTacToe'!
 
-!Observer methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:01:53'!
+!Observer methodsFor: 'initialization' stamp: 'j a p 5/31/2018 20:01:53'!
 initializeWith: aTicTacToe
 	lines := OrderedCollection new.
 	game := aTicTacToe.
 	game addObserver: self.! !
 
-!Observer methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 19:57:15'!
+
+!Observer methodsFor: 'accessing' stamp: 'j a p 5/31/2018 19:57:15'!
 lines
 	^ lines copy.! !
+
+
+!Observer methodsFor: 'observer triggers' stamp: 'SS 6/3/2018 22:27:31'!
+oPlayed: aPosition
+	self subclassResponsibility ! !
+
+!Observer methodsFor: 'observer triggers' stamp: 'SS 6/3/2018 22:27:43'!
+xPlayed: aPosition
+	self subclassResponsibility ! !
 
 
 !classDefinition: #BoardViewObserver category: #TicTacToe!
@@ -615,15 +743,7 @@ Observer subclass: #BoardViewObserver
 	poolDictionaries: ''
 	category: 'TicTacToe'!
 
-!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:25:20'!
-oPlayed: aPosition
-	self printBoard.
-	game hasPlayerOWon ifTrue: [ lines add: 'O Won!!' ]
-		ifFalse: [ lines add: 'Playing X'. ]
-	
-! !
-
-!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:21:04'!
+!BoardViewObserver methodsFor: 'printing' stamp: 'SS 6/3/2018 13:21:04'!
 printBoard
 	| rowString charToAdd colString |
 	lines _ OrderedCollection new.
@@ -639,11 +759,31 @@ printBoard
 		(x = 1 or: [x = 2]) ifTrue: [lines add: '-----'].
 	].! !
 
-!BoardViewObserver methodsFor: 'as yet unclassified' stamp: 'SS 6/3/2018 13:24:43'!
+
+!BoardViewObserver methodsFor: 'initialization' stamp: 'SS 6/3/2018 22:24:40'!
+initializeWith: aTicTacToe
+	super initializeWith: aTicTacToe.
+	lines add: ' | | '.
+	lines add: '-----' .
+	lines add: ' | | '.
+	lines add: '-----'.
+	lines add: ' | | '.
+	lines add: 'Playing X'.! !
+
+
+!BoardViewObserver methodsFor: 'observer triggers' stamp: 'SS 6/3/2018 13:25:20'!
+oPlayed: aPosition
+	self printBoard.
+	game hasPlayerOWon ifTrue: [ lines add: 'O Won!!' ]
+		ifFalse: [ lines add: 'Playing X'. ]
+	
+! !
+
+!BoardViewObserver methodsFor: 'observer triggers' stamp: 'SS 6/3/2018 22:19:23'!
 xPlayed: aPosition
 	self printBoard.
 	game hasPlayerXWon ifTrue: [ lines add: 'X Won!!' ]
-							  ifFalse: [ game isTied ifTrue: [lines add: 'Tied!!!!'] ifFalse:[ lines add: 'Playing O'.] ]
+							  ifFalse: [ game isTied ifTrue: [lines add: 'Tied!!'] ifFalse:[ lines add: 'Playing O'.] ]
 	
 ! !
 
@@ -655,7 +795,7 @@ Observer subclass: #ConsoleObserver
 	poolDictionaries: ''
 	category: 'TicTacToe'!
 
-!ConsoleObserver methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:31:59'!
+!ConsoleObserver methodsFor: 'observer triggers' stamp: 'j a p 5/31/2018 20:31:59'!
 oPlayed: aPosition
 	lines add: 'O marcó en ', aPosition printString.
 	game hasPlayerOWon ifTrue: [ lines add: 'Estado: Juego terminado - Ganó O!!' ]
@@ -663,7 +803,7 @@ oPlayed: aPosition
 	
 ! !
 
-!ConsoleObserver methodsFor: 'as yet unclassified' stamp: 'j a p 5/31/2018 20:45:35'!
+!ConsoleObserver methodsFor: 'observer triggers' stamp: 'j a p 5/31/2018 20:45:35'!
 xPlayed: aPosition
 	lines add: 'X marcó en ', aPosition printString.
 	game hasPlayerXWon ifTrue: [ lines add: 'Estado: Juego terminado - Ganó X!!' ]
