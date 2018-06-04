@@ -738,26 +738,44 @@ xPlayed: aPosition
 
 !classDefinition: #BoardViewObserver category: #TicTacToe!
 Observer subclass: #BoardViewObserver
-	instanceVariableNames: ''
+	instanceVariableNames: 'rowString colString'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TicTacToe'!
 
-!BoardViewObserver methodsFor: 'printing' stamp: 'SS 6/3/2018 13:21:04'!
+!BoardViewObserver methodsFor: 'printing' stamp: 'j a p 6/4/2018 12:53:12'!
 printBoard
-	| rowString charToAdd colString |
 	lines _ OrderedCollection new.
-	(1 to: 3) do: [:x |
-		rowString _ ''.
-		(1 to: 3) do: [ :y |
-			(game playerXPositions includes: x@y) ifTrue: [ charToAdd _ 'X']
-				ifFalse: [ (game playerOPositions includes: x@y) ifTrue: [ charToAdd _ 'O'] ifFalse: [charToAdd  _ ' ']].
-			(y = 3) ifTrue: [colString _ charToAdd] ifFalse:[colString _ (charToAdd ,'|')].
-			rowString  _ (rowString, colString) .
-		].
-		lines add: rowString .
-		(x = 1 or: [x = 2]) ifTrue: [lines add: '-----'].
-	].! !
+	(1 to: 3) do: [:lineNumber | self printBoardLine: lineNumber	].
+! !
+
+!BoardViewObserver methodsFor: 'printing' stamp: 'j a p 6/4/2018 12:51:31'!
+printBoardLine: aLineNumber
+	rowString _ ''.
+	(1 to: 3) do: [ : aColumnNumber | self printBoardPositionInLine: aLineNumber andColumn: aColumnNumber ].
+	lines add: rowString .
+	(aLineNumber = 1 or: [aLineNumber = 2]) ifTrue: [lines add: '-----'].! !
+
+!BoardViewObserver methodsFor: 'printing' stamp: 'j a p 6/4/2018 12:58:02'!
+printBoardPositionInLine: aLineNumber andColumn: aColumnNumber
+	| charToAdd |
+
+	(game playerXPositions includes: aLineNumber@aColumnNumber)
+		ifTrue: [ charToAdd _ 'X']
+		ifFalse: [ (game playerOPositions includes: aLineNumber@aColumnNumber)
+							ifTrue: [ charToAdd _ 'O']
+							ifFalse: [charToAdd  _ ' ']].
+
+	(aColumnNumber = 3)
+		ifTrue: [colString _ charToAdd]
+		ifFalse:[colString _ (charToAdd ,'|')].
+	rowString  _ (rowString, colString).
+	
+	
+	
+	"Esta solucion tiene ifs, debido a que no vimos alternativa viable que lo evite.
+	Una forma de evitarlo era almacenar adicionalmente una matriz con las jugadas hechas, pero esto significaria repetir datos, tendriamos las dos listas de tuplas y la matriz con las jugadas
+	Otra manera es directamente reemplazar las dos listas de tuplas por la matriz de jugadas hechas, pero requiere un refactor de todo el codigo, y en clase dijeron que no habia que modificar tanto la estructura original del TicTacToe"! !
 
 
 !BoardViewObserver methodsFor: 'initialization' stamp: 'SS 6/3/2018 22:24:40'!
@@ -860,6 +878,9 @@ add: aPosition to: positions nextPlayerState: nextPlayingState winnerState: winn
 	positions add: aPosition.
 	state := (self stateAfterAddingTo: positions with: nextPlayingState and: winnerState) for: self
 	! !
+
+!TicTacToe methodsFor: 'marking board - private' stamp: 'j a p 6/4/2018 12:20:53'!
+addAnXToBoardViewInRow: aRow andColumn: aColumn! !
 
 !TicTacToe methodsFor: 'marking board - private' stamp: 'HAW 10/25/2017 15:35:08'!
 assertIsFree: aPosition
