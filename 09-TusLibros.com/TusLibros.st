@@ -84,13 +84,13 @@ initializeWithCatalog: aCatalog
 	items _ OrderedCollection new.! !
 
 
-!Carrito methodsFor: 'adding' stamp: 'SS 6/7/2018 11:05:49'!
+!Carrito methodsFor: 'adding' stamp: 'j a p 6/7/2018 16:03:02'!
 add: aQuantity of: anItem
 
 	(aQuantity > 0) ifFalse: [self error: self class itemQuantityNotPositive].
 	(catalogo includes: anItem ) ifFalse: [self error: self class itemNotInCatalog].
 	
-	(1 to: aQuantity) do: [:aNumber | items add: anItem ]. 
+	aQuantity timesRepeat: [ items add: anItem ]. 
 	! !
 
 
