@@ -160,16 +160,6 @@ test04CheckOutWithExpiredCardRaisesExpiredCardError
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = Cashier canNotPayWithExpiredCardError ].! !
 
-!CashierTest methodsFor: 'testing' stamp: 'j a p 6/11/2018 15:35:41'!
-test05CheckOutWithNotExpiredCardDoesNotRaiseError
-	| aCart |
-	aCart _ supermarket createCart.
-	aCart add: supermarket itemSellByTheStore.
-	Cashier
-		checkOutWithCart: aCart
-		payingWithCard: supermarket defaultNotExpiredCreditCard
-		atDate: supermarket today.! !
-
 
 !classDefinition: #Cart category: #TusLibros!
 Object subclass: #Cart
