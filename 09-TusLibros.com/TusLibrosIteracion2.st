@@ -132,33 +132,33 @@ test02CheckOutTotalWithOneElementIsRight
 		atDate: supermarket today.
 	self assert: aCashier checkOut = supermarket itemSellByTheStorePrice.! !
 
-!CashierTest methodsFor: 'testing' stamp: 'j a p 6/11/2018 15:35:41'!
+!CashierTest methodsFor: 'testing' stamp: 'j a p 6/11/2018 15:57:45'!
 test03CheckOutTotalWithMoreThanOneElementIsRight
 	| aCart aCashier |
 	aCart _ supermarket createCart.
-	aCart
-		add: 10
-		of: supermarket itemSellByTheStore.
-	aCashier _ Cashier
-		checkOutWithCart: aCart
-		payingWithCard: supermarket defaultNotExpiredCreditCard
-		atDate: supermarket today.
+	aCart add: 10 of: supermarket itemSellByTheStore.
+	aCashier := Cashier checkOutWithCart: aCart payingWithCard: supermarket defaultNotExpiredCreditCard atDate: supermarket today.
 	self assert: aCashier checkOut = (supermarket itemSellByTheStorePrice * 10).! !
 
-!CashierTest methodsFor: 'testing' stamp: 'j a p 6/11/2018 15:35:27'!
+!CashierTest methodsFor: 'testing' stamp: 'j a p 6/11/2018 15:56:51'!
 test04CheckOutWithExpiredCardRaisesExpiredCardError
 	| aCart |
 	aCart _ supermarket createCart.
 	aCart add: supermarket itemSellByTheStore.
 	self
-		should: [
-			Cashier
-				checkOutWithCart: aCart
-				payingWithCard: supermarket defaultExpiredCreditCard
-				atDate: supermarket today ]
+		should: [ Cashier checkOutWithCart: aCart payingWithCard: supermarket defaultExpiredCreditCard atDate: supermarket today ]
 		raise: Error
-		withExceptionDo: [ :anError |
-			self assert: anError messageText = Cashier canNotPayWithExpiredCardError ].! !
+		withExceptionDo: [ :anError | self assert: anError messageText = Cashier canNotPayWithExpiredCardError ].! !
+
+!CashierTest methodsFor: 'testing' stamp: 'j a p 6/11/2018 15:59:21'!
+test05CheckOutWithMoreThanOneElementAndExpiredCardRaisesExpiredCardError
+	| aCart |
+	aCart _ supermarket createCart.
+	aCart add: 10 of: supermarket itemSellByTheStore.
+	self
+		should: [ Cashier checkOutWithCart: aCart payingWithCard: supermarket defaultExpiredCreditCard atDate: supermarket today ]
+		raise: Error
+		withExceptionDo: [ :anError | self assert: anError messageText = Cashier canNotPayWithExpiredCardError ].! !
 
 
 !classDefinition: #Cart category: #TusLibros!
