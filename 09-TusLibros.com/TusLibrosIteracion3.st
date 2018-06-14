@@ -414,13 +414,6 @@ checkOut
 	
 	^total! !
 
-!Cashier methodsFor: 'as yet unclassified' stamp: 'HernanWilkinson 6/17/2013 18:42'!
-initializeToCheckout: aCart charging: aCreditCard registeringOn: aSalesBook
-	
-	cart := aCart.
-	creditCart := aCreditCard.
-	salesBook := aSalesBook! !
-
 !Cashier methodsFor: 'as yet unclassified' stamp: 'j a p 6/14/2018 12:20:17'!
 initializeToCheckout: aCart charging: aCreditCard registeringOn: aSalesBook processingWith: aMerchantProcessor
 	
@@ -434,14 +427,6 @@ initializeToCheckout: aCart charging: aCreditCard registeringOn: aSalesBook proc
 !classDefinition: 'Cashier class' category: #TusLibros!
 Cashier class
 	instanceVariableNames: ''!
-
-!Cashier class methodsFor: 'instance creation' stamp: 'HernanWilkinson 6/17/2013 18:42'!
-toCheckout: aCart charging: aCreditCard on: aDate registeringOn: aSalesBook
-	
-	self assertIsNotEmpty: aCart.
-	self assertIsNotExpired: aCreditCard on: aDate.
-	
-	^self new initializeToCheckout: aCart charging: aCreditCard registeringOn: aSalesBook! !
 
 !Cashier class methodsFor: 'instance creation' stamp: 'j a p 6/14/2018 12:06:12'!
 toCheckout: aCart charging: aCard on: aDate registeringOn: aSalesBook processingWith: aMerchantProcessor
