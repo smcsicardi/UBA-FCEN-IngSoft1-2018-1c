@@ -379,9 +379,9 @@ defaultInterface
 defaultNotExpiredDate
 	^ testObjectsFactory notExpiredDate ! !
 
-!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 01:39:57'!
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:57:08'!
 invalidBook
-	^ testObjectsFactory invalidBook! !
+	^ testObjectsFactory itemNotSellByTheStore ! !
 
 !ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:29:42'!
 invalidCartId
@@ -395,13 +395,9 @@ invalidClientId
 invalidClientPassword
 	^ testObjectsFactory invalidClientPassword ! !
 
-!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:29:17'!
-otherValidBook
-	^ testObjectsFactory otherValidBook! !
-
-!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:30:54'!
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:56:24'!
 validBook
-	^ testObjectsFactory validBook! !
+	^ testObjectsFactory itemSellByTheStore! !
 
 !ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:25:59'!
 validClientId
@@ -1121,10 +1117,6 @@ anotherItemSellByTheStorePrice
 	
 	^11! !
 
-!StoreTestObjectsFactory methodsFor: 'items' stamp: 'j a p 6/18/2018 01:50:05'!
-invalidBook
-	^ 'This book is invalid'! !
-
 !StoreTestObjectsFactory methodsFor: 'items' stamp: 'HernanWilkinson 6/17/2013 18:08'!
 itemNotSellByTheStore
 	
@@ -1139,14 +1131,6 @@ itemSellByTheStore
 itemSellByTheStorePrice
 	
 	^10! !
-
-!StoreTestObjectsFactory methodsFor: 'items' stamp: 'j a p 6/18/2018 12:29:06'!
-otherValidBook
-	^ 'otherValidBook'! !
-
-!StoreTestObjectsFactory methodsFor: 'items' stamp: 'j a p 6/18/2018 12:30:47'!
-validBook
-	^ 'validBook'! !
 
 
 !StoreTestObjectsFactory methodsFor: 'cart' stamp: 'HernanWilkinson 6/17/2013 18:08'!
