@@ -5,60 +5,13 @@ TestCase subclass: #ApiRestInterfaceTest
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 21:39:15'!
-debit: anAmout from: aCreditCard! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:37:57'!
-defaultClientName
-	^ testObjectsFactory defaultClientName ! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 21:03:34'!
-defaultCreditCard
-	^ '1324123412341324'! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 21:30:59'!
-defaultExpiredDate
-	^ testObjectsFactory expiredDate ! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:54:38'!
-defaultInterface
-	^ ApiRestInterface new
-		initializeWithClients: (Dictionary new at: self validClientId put: self validClientPassword; yourself)
-		withCatalog: testObjectsFactory defaultCatalog
-		withSalesBook: OrderedCollection new
-		withMerchantProcessor: self
-		usingTimer: timer! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 21:29:55'!
-defaultNotExpiredDate
-	^ testObjectsFactory notExpiredDate ! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:39:57'!
-invalidBook
-	^ testObjectsFactory invalidBook! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 19:53:55'!
-invalidCartId
-	^ -1! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:40:22'!
-invalidClientId
-	^ testObjectsFactory invalidClientId! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 19:20:48'!
-invalidClientPassword
-	^ 'PassClienteInvalida'! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:14:05'!
-otherValidBook
-	^ 'otherValidBook'! !
-
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:03:54'!
+!ApiRestInterfaceTest methodsFor: 'setup' stamp: 'j a p 6/18/2018 01:03:54'!
 setUp
 	testObjectsFactory _ StoreTestObjectsFactory new.
 	timer := Timer new initialize! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 19:29:45'!
+
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/17/2018 19:29:45'!
 test01ApiRestInterfaceCanCreateCartWithValidClientIDAndPassword
 	| apiRestInterface | 
 	
@@ -66,7 +19,7 @@ test01ApiRestInterfaceCanCreateCartWithValidClientIDAndPassword
 		
 	self shouldnt: [ apiRestInterface createCartWithClientId: self validClientId withPassword: self validClientPassword] raise: Error! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:11:05'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'SS 6/17/2018 20:11:05'!
 test02ApiRestInterfaceCanNotCreateCartWithInvalidClientIDAndPassword
 	| apiRestInterface | 
 	
@@ -76,7 +29,7 @@ test02ApiRestInterfaceCanNotCreateCartWithInvalidClientIDAndPassword
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  invalidCredentialsError)]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:14:16'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'SS 6/17/2018 20:14:16'!
 test03ApiRestInterfaceCanNotCreateCartWithValidClientIDAndInvalidPassword
 	| apiRestInterface | 
 	
@@ -86,7 +39,7 @@ test03ApiRestInterfaceCanNotCreateCartWithValidClientIDAndInvalidPassword
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  invalidCredentialsError)]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:16:01'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'SS 6/17/2018 20:16:01'!
 test04ApiRestInterfaceCanNotCreateCartWithInvalidClientIDAndValidPassword
 	| apiRestInterface | 
 	
@@ -96,7 +49,7 @@ test04ApiRestInterfaceCanNotCreateCartWithInvalidClientIDAndValidPassword
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface invalidCredentialsError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 20:00:58'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/17/2018 20:00:58'!
 test05ApiRestCanAddOneItemToCart
 	| apiRestInterface cartId | 
 	
@@ -106,7 +59,7 @@ test05ApiRestCanAddOneItemToCart
 	
 	self shouldnt: [ apiRestInterface addItem: self validBook toCartWithId: cartId withQuantity: 1] raise: Error! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:17:28'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'SS 6/17/2018 20:17:28'!
 test06ApiRestCanNotAddItemToCartWithInvalidId
 	| apiRestInterface | 
 	
@@ -116,7 +69,7 @@ test06ApiRestCanNotAddItemToCartWithInvalidId
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  InvalidCartIdError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:50:19'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 01:50:19'!
 test07ApiRestCanNotAddItemNotInCatalog
 	
 	| cartId apiRestInterface | 
@@ -129,7 +82,7 @@ test07ApiRestCanNotAddItemNotInCatalog
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = Cart invalidItemErrorMessage)]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:43:03'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'SS 6/17/2018 20:43:03'!
 test08ListOfEmptyCartIsEmpty
 	
 	| cartId apiRestInterface | 
@@ -140,7 +93,7 @@ test08ListOfEmptyCartIsEmpty
 	
 	self assert: (apiRestInterface listCartWithId: cartId) isEmpty.! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:47:07'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'SS 6/17/2018 20:47:07'!
 test09CanNotMakeListOfInvalidCartId
 	
 	| apiRestInterface | 
@@ -151,7 +104,7 @@ test09CanNotMakeListOfInvalidCartId
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  InvalidCartIdError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 21:53:42'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/17/2018 21:53:42'!
 test10ListOfValidCartIdShowValidItems
 
 	| cartId apiRestInterface cartItems| 
@@ -167,7 +120,7 @@ test10ListOfValidCartIdShowValidItems
 	
 	self assert: (apiRestInterface listCartWithId: cartId) equals: cartItems.! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:36:01'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 12:18:32'!
 test11CanCheckOutCart
 
 	| cartId apiRestInterface| 
@@ -180,25 +133,26 @@ test11CanCheckOutCart
 	
 	self shouldnt: [apiRestInterface checkOutCartWithId: cartId withCreditCard: self defaultCreditCard 
 		withExpirationDate: self defaultNotExpiredDate
-		withOwnerName: self defaultClientName]
+		withOwnerName: self validClientId]
 	raise: Error! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:36:09'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 12:22:58'!
 test12CanNotCheckOutEmptyCart
 
 	| cartId apiRestInterface| 
 	
 	apiRestInterface := self defaultInterface.
 	
-	cartId := self invalidCartId .
+	
+	cartId := apiRestInterface createCartWithClientId: self validClientId withPassword: self validClientPassword.
 		
 	self should: [apiRestInterface checkOutCartWithId: cartId withCreditCard: self defaultCreditCard 
 		withExpirationDate: self defaultNotExpiredDate
-		withOwnerName: self defaultClientName]
+		withOwnerName: self validClientId]
 	raise: Error
-	withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  InvalidCartIdError )]! !
+	withExceptionDo: [:anError | self assert: (anError messageText = Cashier  cartCanNotBeEmptyErrorMessage )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:36:14'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 12:19:13'!
 test13CanNotCheckOutOfInvalidCart
 
 	| cartId apiRestInterface| 
@@ -209,11 +163,11 @@ test13CanNotCheckOutOfInvalidCart
 		
 	self should: [apiRestInterface checkOutCartWithId: cartId withCreditCard: self defaultCreditCard 
 		withExpirationDate: self defaultNotExpiredDate
-		withOwnerName: self defaultClientName]
+		withOwnerName: self validClientId]
 	raise: Error
 	withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  InvalidCartIdError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:36:19'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 12:19:18'!
 test14CanNotCheckOutWithExpiredCreditCard
 
 	| cartId apiRestInterface| 
@@ -226,11 +180,11 @@ test14CanNotCheckOutWithExpiredCreditCard
 		
 	self should: [apiRestInterface checkOutCartWithId: cartId withCreditCard: self defaultCreditCard 
 		withExpirationDate: (self defaultExpiredDate)
-		withOwnerName: self defaultClientName]
+		withOwnerName: self validClientId]
 	raise: Error
 	withExceptionDo: [:anError | self assert: (anError messageText = Cashier canNotChargeAnExpiredCreditCardErrorMessage )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:36:24'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 12:19:26'!
 test15CanMakeListOfOnePurchasedItem
 
 	| cartId apiRestInterface |
@@ -244,12 +198,12 @@ test15CanMakeListOfOnePurchasedItem
 	apiRestInterface
 		checkOutCartWithId: cartId withCreditCard: self defaultCreditCard 
 		withExpirationDate: (self defaultNotExpiredDate)
-		withOwnerName: self defaultClientName.
+		withOwnerName: self validClientId.
 		
 	self shouldnt: [ apiRestInterface listPurchasesOfClientWithId: self validClientId withPassword: self validClientPassword ]
 		raise: Error! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:04:13'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 00:04:13'!
 test16CanMakeListOfOnePurchasedItemAndItsCorrect
 
 	| cartId apiRestInterface items|
@@ -269,7 +223,7 @@ test16CanMakeListOfOnePurchasedItemAndItsCorrect
 
 	self assert: (items occurrencesOf: self validBook) equals: 4.! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:18:13'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 00:18:13'!
 test17CanMakeListOfTwoPurchasedItemsAndItsCorrect
 
 	| cartId apiRestInterface items|
@@ -292,7 +246,7 @@ test17CanMakeListOfTwoPurchasedItemsAndItsCorrect
 	self assert: (items occurrencesOf: testObjectsFactory itemSellByTheStore ) equals: 2.
 	self assert: (items occurrencesOf: testObjectsFactory anotherItemSellByTheStore ) equals: 4.! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:22:31'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 00:22:31'!
 test18CanNotMakeListOfPurchasedItemsOfInvalidClient
 
 	| cartId apiRestInterface|
@@ -315,7 +269,7 @@ test18CanNotMakeListOfPurchasedItemsOfInvalidClient
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  invalidCredentialsError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:22:55'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 00:22:55'!
 test19CanNotMakeListOfPurchasedItemsOfValidClientWithInvalidPassword
 
 	| cartId apiRestInterface|
@@ -338,7 +292,7 @@ test19CanNotMakeListOfPurchasedItemsOfValidClientWithInvalidPassword
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  invalidCredentialsError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:21:50'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 01:21:50'!
 test20CanNotAddItemToCartWithExpiredSession
 
 	| cartId apiRestInterface |
@@ -354,7 +308,7 @@ test20CanNotAddItemToCartWithExpiredSession
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  sessionExpiredError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:36:28'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 12:23:21'!
 test21CanNotCheckoutCartWithExpiredSession
 
 	| cartId apiRestInterface |
@@ -374,11 +328,11 @@ test21CanNotCheckoutCartWithExpiredSession
 			checkOutCartWithId: cartId
 			withCreditCard: self defaultCreditCard 
 			withExpirationDate: self defaultNotExpiredDate
-			withOwnerName: self defaultClientName]
+			withOwnerName: self validClientId]
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  sessionExpiredError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:33:39'!
+!ApiRestInterfaceTest methodsFor: 'testing' stamp: 'j a p 6/18/2018 01:33:39'!
 test22CanNotMakeListItemsOfCartWithExpiredSession
 
 	| cartId apiRestInterface |
@@ -398,17 +352,64 @@ test22CanNotMakeListItemsOfCartWithExpiredSession
 		raise: Error
 		withExceptionDo: [:anError | self assert: (anError messageText = ApiRestInterface  sessionExpiredError )]! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 19:39:21'!
+
+!ApiRestInterfaceTest methodsFor: 'merchant processor protocol' stamp: 'j a p 6/17/2018 21:39:15'!
+debit: anAmout from: aCreditCard! !
+
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:30:04'!
+defaultCreditCard
+	^ testObjectsFactory defaultCreditCard! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/17/2018 21:30:59'!
+defaultExpiredDate
+	^ testObjectsFactory expiredDate ! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:47:11'!
+defaultInterface
+	^ ApiRestInterface new
+		initializeWithClients: (Dictionary new at: self validClientId put: self validClientPassword; yourself)
+		withCatalog: testObjectsFactory defaultCatalog
+		withSalesBook: OrderedCollection new
+		withMerchantProcessor: self
+		usingTimer: timer
+		usingFactory: testObjectsFactory ! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/17/2018 21:29:55'!
+defaultNotExpiredDate
+	^ testObjectsFactory notExpiredDate ! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 01:39:57'!
+invalidBook
+	^ testObjectsFactory invalidBook! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:29:42'!
+invalidCartId
+	^ testObjectsFactory invalidCartId! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 01:40:22'!
+invalidClientId
+	^ testObjectsFactory invalidClientId! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:27:36'!
+invalidClientPassword
+	^ testObjectsFactory invalidClientPassword ! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:29:17'!
+otherValidBook
+	^ testObjectsFactory otherValidBook! !
+
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:30:54'!
 validBook
-	^ 'validBook'! !
+	^ testObjectsFactory validBook! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:43:06'!
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:25:59'!
 validClientId
-	^ self defaultClientName ! !
+	^ testObjectsFactory validClientId.! !
 
-!ApiRestInterfaceTest methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 19:18:29'!
+!ApiRestInterfaceTest methodsFor: 'default test objects' stamp: 'j a p 6/18/2018 12:30:36'!
 validClientPassword
-	^ 'PassCliente'! !
+	^ testObjectsFactory validClientPassword ! !
 
 
 !classDefinition: #CartTest category: #TusLibros!
@@ -518,138 +519,120 @@ TestCase subclass: #CashierTest
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 01:39:11'!
+!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 12:25:59'!
 test01CanNotCheckoutAnEmptyCart
-
 	| salesBook |
-	
-	salesBook := OrderedCollection new.
-	self 
-		should: [ Cashier 
-			toCheckout: testObjectsFactory createCart 
-			charging: testObjectsFactory notExpiredCreditCard 
-			throught: self
-			on: testObjectsFactory today
-			registeringOn:  salesBook
-			withClient: testObjectsFactory defaultClientName ]
-		raise: Error - MessageNotUnderstood
-		withExceptionDo: [ :anError |
-			self assert: anError messageText = Cashier cartCanNotBeEmptyErrorMessage.
-			self assert: salesBook isEmpty ]! !
-
-!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 01:39:16'!
-test02CalculatedTotalIsCorrect
-
-	| cart cashier |
-	
-	cart := testObjectsFactory createCart.
-	cart add: 2 of: testObjectsFactory itemSellByTheStore.
-	
-	cashier :=  Cashier
-		toCheckout: cart 
-		charging: testObjectsFactory notExpiredCreditCard 
-		throught: self
-		on: testObjectsFactory today 
-		registeringOn: OrderedCollection new
-		withClient: testObjectsFactory defaultClientName .
-		
-	self assert: cashier checkOut = (testObjectsFactory itemSellByTheStorePrice * 2)! !
-
-!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 01:39:21'!
-test03CanNotCheckoutWithAnExpiredCreditCart
-
-	| cart salesBook |
-
-	cart := testObjectsFactory createCart.
-	cart add: testObjectsFactory itemSellByTheStore.
-	salesBook := OrderedCollection new.
-	
+	salesBook _ OrderedCollection new.
 	self
-		should: [ Cashier 
-				toCheckout: cart 
-				charging: testObjectsFactory expiredCreditCard 
+		should: [
+			Cashier
+				toCheckout: testObjectsFactory createCart
+				charging: testObjectsFactory notExpiredCreditCard
 				throught: self
 				on: testObjectsFactory today
 				registeringOn: salesBook
-				withClient: testObjectsFactory defaultClientName  ]
+				withClient: testObjectsFactory validClientId ]
 		raise: Error - MessageNotUnderstood
-		withExceptionDo: [ :anError | 
-			self assert: anError messageText = Cashier canNotChargeAnExpiredCreditCardErrorMessage.
-			self assert: salesBook isEmpty ]! !
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = Cashier cartCanNotBeEmptyErrorMessage.
+			self assert: salesBook isEmpty ].! !
 
-!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 01:39:26'!
-test04CheckoutRegistersASale
+!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 12:25:59'!
+test02CalculatedTotalIsCorrect
+	| cart cashier |
+	cart _ testObjectsFactory createCart.
+	cart
+		add: 2
+		of: testObjectsFactory itemSellByTheStore.
+	cashier _ Cashier
+		toCheckout: cart
+		charging: testObjectsFactory notExpiredCreditCard
+		throught: self
+		on: testObjectsFactory today
+		registeringOn: OrderedCollection new
+		withClient: testObjectsFactory validClientId.
+	self assert: cashier checkOut = (testObjectsFactory itemSellByTheStorePrice * 2).! !
 
-	| cart cashier salesBook total |
-
-	cart := testObjectsFactory createCart.
+!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 12:25:59'!
+test03CanNotCheckoutWithAnExpiredCreditCart
+	| cart salesBook |
+	cart _ testObjectsFactory createCart.
 	cart add: testObjectsFactory itemSellByTheStore.
-	salesBook := OrderedCollection new.
- 
-	cashier:= Cashier 
-		toCheckout: cart 
+	salesBook _ OrderedCollection new.
+	self
+		should: [
+			Cashier
+				toCheckout: cart
+				charging: testObjectsFactory expiredCreditCard
+				throught: self
+				on: testObjectsFactory today
+				registeringOn: salesBook
+				withClient: testObjectsFactory validClientId ]
+		raise: Error - MessageNotUnderstood
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = Cashier canNotChargeAnExpiredCreditCardErrorMessage.
+			self assert: salesBook isEmpty ].! !
+
+!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 12:25:59'!
+test04CheckoutRegistersASale
+	| cart cashier salesBook total |
+	cart _ testObjectsFactory createCart.
+	cart add: testObjectsFactory itemSellByTheStore.
+	salesBook _ OrderedCollection new.
+	cashier _ Cashier
+		toCheckout: cart
 		charging: testObjectsFactory notExpiredCreditCard
 		throught: self
 		on: testObjectsFactory today
 		registeringOn: salesBook
-		withClient: testObjectsFactory defaultClientName .
-		
-	total := cashier checkOut.
-					
+		withClient: testObjectsFactory validClientId.
+	total _ cashier checkOut.
 	self assert: salesBook size = 1.
 	self assert: salesBook first total = total.! !
 
-!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 01:39:30'!
+!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 12:25:59'!
 test05CashierChargesCreditCardUsingMerchantProcessor
-
-	| cart cashier salesBook total creditCard debitedAmout debitedCreditCard  |
-
-	cart := testObjectsFactory createCart.
+	| cart cashier salesBook total creditCard debitedAmout debitedCreditCard |
+	cart _ testObjectsFactory createCart.
 	cart add: testObjectsFactory itemSellByTheStore.
-	creditCard := testObjectsFactory notExpiredCreditCard.
-	salesBook := OrderedCollection new.
- 
-	cashier:= Cashier 
-		toCheckout: cart 
+	creditCard _ testObjectsFactory notExpiredCreditCard.
+	salesBook _ OrderedCollection new.
+	cashier _ Cashier
+		toCheckout: cart
 		charging: creditCard
 		throught: self
 		on: testObjectsFactory today
 		registeringOn: salesBook
-		withClient: testObjectsFactory defaultClientName .
-		
-	debitBehavior := [ :anAmount :aCreditCard | 
-		debitedAmout := anAmount.
-		debitedCreditCard := aCreditCard ].
-	total := cashier checkOut.
-					
+		withClient: testObjectsFactory validClientId.
+	debitBehavior _ [ :anAmount :aCreditCard |
+	debitedAmout _ anAmount.
+	debitedCreditCard _ aCreditCard ].
+	total _ cashier checkOut.
 	self assert: debitedCreditCard = creditCard.
 	self assert: debitedAmout = total.! !
 
-!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 01:39:34'!
+!CashierTest methodsFor: 'tests' stamp: 'j a p 6/18/2018 12:25:59'!
 test06CashierDoesNotSaleWhenTheCreditCardHasNoCredit
-
 	| cart cashier salesBook creditCard |
-
-	cart := testObjectsFactory createCart.
+	cart _ testObjectsFactory createCart.
 	cart add: testObjectsFactory itemSellByTheStore.
-	creditCard := testObjectsFactory notExpiredCreditCard.
-	salesBook := OrderedCollection new.
- 	debitBehavior := [ :anAmount :aCreditCard | self error: Cashier creditCardHasNoCreditErrorMessage].
-	
-	cashier:= Cashier 
-		toCheckout: cart 
+	creditCard _ testObjectsFactory notExpiredCreditCard.
+	salesBook _ OrderedCollection new.
+	debitBehavior _ [ :anAmount :aCreditCard |
+	self error: Cashier creditCardHasNoCreditErrorMessage ].
+	cashier _ Cashier
+		toCheckout: cart
 		charging: creditCard
 		throught: self
 		on: testObjectsFactory today
 		registeringOn: salesBook
-		withClient: testObjectsFactory defaultClientName .
-		
-	self 
-		should: [cashier checkOut ]
+		withClient: testObjectsFactory validClientId.
+	self
+		should: [ cashier checkOut ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = Cashier creditCardHasNoCreditErrorMessage.
-			self assert: salesBook isEmpty ]! !
+			self assert: salesBook isEmpty ].! !
 
 
 !CashierTest methodsFor: 'setup' stamp: 'HernanWilkinson 6/17/2013 19:03'!
@@ -667,12 +650,46 @@ debit: anAmount from: aCreditCard
 
 !classDefinition: #ApiRestInterface category: #TusLibros!
 Object subclass: #ApiRestInterface
-	instanceVariableNames: 'clients carts cartIndex catalog merchantProcessor salesBook timer sessions'
+	instanceVariableNames: 'clients carts cartIndex catalog merchantProcessor salesBook timer sessions testObjectsFactory'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:58:21'!
+!ApiRestInterface methodsFor: 'assertions' stamp: 'SS 6/17/2018 20:12:20'!
+assertValidCartId: aCartId
+	carts at: aCartId ifAbsent: [self error: self class InvalidCartIdError]! !
+
+!ApiRestInterface methodsFor: 'assertions' stamp: 'SS 6/17/2018 20:13:24'!
+assertValidClientCredentialsWithId: aClientId withPassword: aPassword
+	clients at: aClientId ifAbsent: [self error: self class invalidCredentialsError].
+	(clients at: aClientId) = aPassword ifFalse: [self error: self class invalidCredentialsError]
+	! !
+
+!ApiRestInterface methodsFor: 'assertions' stamp: 'j a p 6/18/2018 01:18:37'!
+assertValidSession: aCartId
+	sessions at: aCartId ifAbsent: [self error: self class invalidCartIdSessionError].
+	((sessions at: aCartId) hasExpiredOn: timer now) ifTrue: [self error: self class sessionExpiredError]! !
+
+
+!ApiRestInterface methodsFor: 'time' stamp: 'j a p 6/18/2018 12:46:21'!
+today
+	^ testObjectsFactory today! !
+
+
+!ApiRestInterface methodsFor: 'initialization' stamp: 'j a p 6/18/2018 12:46:09'!
+initializeWithClients: aClientsGroup withCatalog: aCatalog withSalesBook: aSalesBook withMerchantProcessor: aMerchantProcessor usingTimer: aTimer usingFactory: aTestObjectsFactory
+	catalog _ aCatalog.
+	clients := aClientsGroup.
+	carts := Dictionary new.
+	cartIndex := 0.
+	merchantProcessor := aMerchantProcessor.
+	salesBook := aSalesBook.
+	timer _ aTimer.
+	sessions _ Dictionary new.
+	testObjectsFactory := aTestObjectsFactory.! !
+
+
+!ApiRestInterface methodsFor: 'operations' stamp: 'j a p 6/18/2018 00:58:21'!
 addItem: anItem toCartWithId: aCartId  withQuantity: aQuantity
 	|cart|
 	
@@ -684,22 +701,7 @@ addItem: anItem toCartWithId: aCartId  withQuantity: aQuantity
 	
 	cart add: aQuantity of: anItem.! !
 
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:12:20'!
-assertValidCartId: aCartId
-	carts at: aCartId ifAbsent: [self error: self class InvalidCartIdError]! !
-
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 20:13:24'!
-assertValidClientCredentialsWithId: aClientId withPassword: aPassword
-	clients at: aClientId ifAbsent: [self error: self class invalidCredentialsError].
-	(clients at: aClientId) = aPassword ifFalse: [self error: self class invalidCredentialsError]
-	! !
-
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:18:37'!
-assertValidSession: aCartId
-	sessions at: aCartId ifAbsent: [self error: self class invalidCartIdSessionError].
-	((sessions at: aCartId) hasExpiredOn: timer now) ifTrue: [self error: self class sessionExpiredError]! !
-
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:28:47'!
+!ApiRestInterface methodsFor: 'operations' stamp: 'j a p 6/18/2018 01:28:47'!
 checkOutCartWithId: aCartId withCreditCard: aCreditCard withExpirationDate: anExpirationDate withOwnerName: anOwnerName
 	| cashier |
 	self assertValidCartId: aCartId.
@@ -715,7 +717,7 @@ checkOutCartWithId: aCartId withCreditCard: aCreditCard withExpirationDate: anEx
 	
 	cashier checkOut.! !
 
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:19:33'!
+!ApiRestInterface methodsFor: 'operations' stamp: 'j a p 6/18/2018 01:19:33'!
 createCartWithClientId: aClientId withPassword: aPassword
 	| newCartId |
 	self assertValidClientCredentialsWithId: aClientId withPassword: aPassword.
@@ -728,23 +730,7 @@ createCartWithClientId: aClientId withPassword: aPassword
 	
 	^ newCartId! !
 
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 19:45:37'!
-createNewCartId
-	cartIndex:= cartIndex + 1.
-	^ cartIndex! !
-
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:05:56'!
-initializeWithClients: aClientsGroup withCatalog: aCatalog withSalesBook: aSalesBook withMerchantProcessor: aMerchantProcessor usingTimer: aTimer
-	catalog _ aCatalog.
-	clients := aClientsGroup.
-	carts := Dictionary new.
-	cartIndex := 0.
-	merchantProcessor := aMerchantProcessor.
-	salesBook := aSalesBook.
-	timer _ aTimer.
-	sessions _ Dictionary new.! !
-
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:29:02'!
+!ApiRestInterface methodsFor: 'operations' stamp: 'j a p 6/18/2018 01:29:02'!
 listCartWithId: aCartId
 	| elementsInCart |
 
@@ -758,7 +744,7 @@ listCartWithId: aCartId
 	
 	^  elementsInCart! !
 
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:25:45'!
+!ApiRestInterface methodsFor: 'operations' stamp: 'j a p 6/18/2018 01:25:45'!
 listPurchasesOfClientWithId: aClientId withPassword: aClientPassword
 	| salesByClient bagOfPurchases |
 
@@ -775,9 +761,11 @@ listPurchasesOfClientWithId: aClientId withPassword: aClientPassword
 	
 	^ bagOfPurchases! !
 
-!ApiRestInterface methodsFor: 'as yet unclassified' stamp: 'j a p 6/17/2018 21:19:28'!
-today
-	^ DateAndTime now! !
+
+!ApiRestInterface methodsFor: 'id creation' stamp: 'j a p 6/17/2018 19:45:37'!
+createNewCartId
+	cartIndex:= cartIndex + 1.
+	^ cartIndex! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -955,14 +943,6 @@ checkOut
 	^ total! !
 
 
-!Cashier methodsFor: 'initialization' stamp: 'HernanWilkinson 6/17/2013 18:53'!
-initializeToCheckout: aCart charging: aCreditCard throught: aMerchantProcessor registeringOn: aSalesBook
-	
-	cart := aCart.
-	creditCard := aCreditCard.
-	merchantProcessor := aMerchantProcessor.
-	salesBook := aSalesBook! !
-
 !Cashier methodsFor: 'initialization' stamp: 'SS 6/17/2018 23:23:18'!
 initializeToCheckout: aCart charging: aCreditCard throught: aMerchantProcessor registeringOn: aSalesBook withClient: aClient
 
@@ -1051,22 +1031,23 @@ Object subclass: #Item
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Item methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 22:15:05'!
+!Item methodsFor: 'initialization' stamp: 'SS 6/17/2018 22:15:05'!
 initializeWithName: aName withQuantity: aQuantity andPrice: itemPrice
 
 	itemName _ aName .
 	quantity _ aQuantity .
 	itemCost _ itemPrice .! !
 
-!Item methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 22:13:05'!
+
+!Item methodsFor: 'accessing' stamp: 'SS 6/17/2018 22:13:05'!
 name
 	^itemName ! !
 
-!Item methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 23:41:49'!
+!Item methodsFor: 'accessing' stamp: 'SS 6/17/2018 23:41:49'!
 quantity
 	^quantity ! !
 
-!Item methodsFor: 'as yet unclassified' stamp: 'SS 6/17/2018 22:13:20'!
+!Item methodsFor: 'accessing' stamp: 'SS 6/17/2018 22:13:20'!
 totalCost
 	^ quantity * itemCost ! !
 
@@ -1077,10 +1058,6 @@ Object subclass: #Sale
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
-
-!Sale methodsFor: 'total' stamp: 'SS 6/17/2018 23:55:59'!
-isOfClientId: aClientId
-	^clientId = aClientId ! !
 
 !Sale methodsFor: 'total' stamp: 'SS 6/17/2018 23:30:07'!
 total
@@ -1099,6 +1076,11 @@ initializeWithItems: aCollectionOfItems andClient: aClientId
 itemsDo: aBlockClosure 
 	items do: aBlockClosure.! !
 
+
+!Sale methodsFor: 'assertions' stamp: 'SS 6/17/2018 23:55:59'!
+isOfClientId: aClientId
+	^clientId = aClientId ! !
+
 
 !classDefinition: #Session category: #TusLibros!
 Object subclass: #Session
@@ -1107,18 +1089,19 @@ Object subclass: #Session
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Session methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:17:27'!
+!Session methodsFor: 'timeout expiration' stamp: 'j a p 6/18/2018 01:17:27'!
 hasExpiredOn: aTime
 	^ aTime > (self sessionTimeout + lastTime)! !
 
-!Session methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:15:04'!
+!Session methodsFor: 'timeout expiration' stamp: 'j a p 6/18/2018 01:13:12'!
+sessionTimeout
+	^ sessionTimeout! !
+
+
+!Session methodsFor: 'initialization' stamp: 'j a p 6/18/2018 01:15:04'!
 initializeWithSessionTimeout: anAmountOfTime andInitialTime: initialTime
 	sessionTimeout := anAmountOfTime.
 	lastTime := initialTime.! !
-
-!Session methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:13:12'!
-sessionTimeout
-	^ sessionTimeout! !
 
 
 !classDefinition: #StoreTestObjectsFactory category: #TusLibros!
@@ -1138,6 +1121,10 @@ anotherItemSellByTheStorePrice
 	
 	^11! !
 
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'j a p 6/18/2018 01:50:05'!
+invalidBook
+	^ 'This book is invalid'! !
+
 !StoreTestObjectsFactory methodsFor: 'items' stamp: 'HernanWilkinson 6/17/2013 18:08'!
 itemNotSellByTheStore
 	
@@ -1153,13 +1140,26 @@ itemSellByTheStorePrice
 	
 	^10! !
 
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'j a p 6/18/2018 12:29:06'!
+otherValidBook
+	^ 'otherValidBook'! !
+
+!StoreTestObjectsFactory methodsFor: 'items' stamp: 'j a p 6/18/2018 12:30:47'!
+validBook
+	^ 'validBook'! !
+
 
 !StoreTestObjectsFactory methodsFor: 'cart' stamp: 'HernanWilkinson 6/17/2013 18:08'!
 createCart
 	
 	^Cart acceptingItemsOf: self defaultCatalog! !
 
-!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'j a p 6/18/2018 00:18:53'!
+!StoreTestObjectsFactory methodsFor: 'cart' stamp: 'j a p 6/18/2018 12:29:29'!
+invalidCartId
+	^ -1! !
+
+
+!StoreTestObjectsFactory methodsFor: 'catalog' stamp: 'j a p 6/18/2018 00:18:53'!
 defaultCatalog
 	
 	^ Dictionary new
@@ -1168,13 +1168,18 @@ defaultCatalog
 		yourself ! !
 
 
-!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'SS 6/17/2018 23:23:43'!
-defaultClient
-	^'client'! !
+!StoreTestObjectsFactory methodsFor: 'client' stamp: 'j a p 6/18/2018 01:41:12'!
+invalidClientId
+	^'IDclienteInvalido'! !
 
-!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'j a p 6/18/2018 01:38:50'!
-defaultClientName
-	^'client'! !
+!StoreTestObjectsFactory methodsFor: 'client' stamp: 'j a p 6/18/2018 12:25:59'!
+validClientId
+	^ 'client'.! !
+
+!StoreTestObjectsFactory methodsFor: 'client' stamp: 'j a p 6/18/2018 12:27:10'!
+validClientPassword
+	^ 'PassCliente'! !
+
 
 !StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'HernanWilkinson 6/17/2013 18:37'!
 expiredCreditCard
@@ -1185,13 +1190,9 @@ expiredCreditCard
 expiredDate
 	^Month month: today monthIndex year: today yearNumber - 1! !
 
-!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'j a p 6/18/2018 01:50:05'!
-invalidBook
-	^ 'This book is invalid'! !
-
-!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'j a p 6/18/2018 01:41:12'!
-invalidClientId
-	^'IDclienteInvalido'! !
+!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'j a p 6/18/2018 12:27:18'!
+invalidClientPassword
+	^ 'PassClienteInvalida'! !
 
 !StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'HernanWilkinson 6/17/2013 18:36'!
 notExpiredCreditCard
@@ -1202,6 +1203,10 @@ notExpiredCreditCard
 notExpiredDate
 	^(Month month: today monthIndex year: today yearNumber + 1)! !
 
+
+!StoreTestObjectsFactory methodsFor: 'initialization' stamp: 'j a p 6/18/2018 12:29:54'!
+defaultCreditCard
+	^ '1324123412341324'! !
 
 !StoreTestObjectsFactory methodsFor: 'initialization' stamp: 'HernanWilkinson 6/17/2013 18:37'!
 initialize
@@ -1222,14 +1227,16 @@ Object subclass: #Timer
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Timer methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:03:08'!
+!Timer methodsFor: 'initialization' stamp: 'j a p 6/18/2018 01:03:08'!
 initialize
 	time := 0 minutes! !
 
-!Timer methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 00:53:22'!
+
+!Timer methodsFor: 'time modifications' stamp: 'j a p 6/18/2018 00:53:22'!
 moveForward: anAmountOfTime
 	time := time + anAmountOfTime ! !
 
-!Timer methodsFor: 'as yet unclassified' stamp: 'j a p 6/18/2018 01:18:57'!
+
+!Timer methodsFor: 'accessing' stamp: 'j a p 6/18/2018 01:18:57'!
 now
 	^ time! !
